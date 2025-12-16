@@ -7,16 +7,12 @@ export default function ShelterHeader({ saved = false }) {
   if (loading) return null; // prevent flicker
 
   return (
-    <header className="w-full bg-white border-b px-6 py-4 flex items-center justify-between">
-      {/* Page Title */}
-      <h1 className="text-lg font-semibold text-gray-800">
-        Shelter Profile
-      </h1>
-
+    <header className="w-full bg-white border-b px-6 py-4 flex items-center justify-end">
+      
       {/* Right Side */}
       <div className="flex items-center gap-4">
-        <span className="text-gray-600">
-          Hi, <span className="font-medium">{user?.name || "Shelter"}</span>
+        <span className="font-medium text-[#183D8B]">
+          Hi, {user?.name || "Shelter"}
         </span>
 
         {saved && (
@@ -26,6 +22,7 @@ export default function ShelterHeader({ saved = false }) {
           </div>
         )}
       </div>
+
     </header>
   );
 }

@@ -70,3 +70,24 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+.custom-toast {
+  background-color: #183D8B !important; /* dark blue */
+  color: white !important;               /* text color */
+  border-radius: 12px !important;       /* curved edges */
+  padding: 8px 12px !important;         /* smaller padding for smaller size */
+  font-size: 14px !important;           /* smaller text */
+  min-height: 40px !important;          /* smaller height */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.custom-toast-body {
+  color: white !important;
+  margin: 0; /* remove extra spacing */
+  padding: 0;
+}
+html, body, #root {
+  height: 100%;
+}
+
+
