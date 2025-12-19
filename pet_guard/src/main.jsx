@@ -5,6 +5,9 @@ import AppRouter from "./router/AppRouter.jsx";
 import AuthContextProvider from "./auth/AuthProvider.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

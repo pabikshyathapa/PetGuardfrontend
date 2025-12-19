@@ -321,7 +321,7 @@ export default function ShelterDashboard() {
       });
     } catch (error) {
       console.error("Failed to save shelter:", error);
-      toast.error("⚠️ Failed to save changes.", {
+      toast.error(" Failed to save changes.", {
         className: "custom-toast",
         bodyClassName: "custom-toast-body",
       });

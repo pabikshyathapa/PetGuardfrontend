@@ -89,12 +89,14 @@ import {
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthProvider";
 import React from "react";
+import { FaTachometerAlt } from "react-icons/fa";
 
 export default function ShelterSidebar() {
   const navigate = useNavigate();
   const { logout } = useAuth(); // ✅ use AuthProvider
 
   const navItems = [
+    { name: "Dashboard", path: "/dashboard", icon: FaTachometerAlt },
     { name: "Profile", path: "/shelter-dashboard", icon: UserCircleIcon },
     { name: "Requests", path: "/shelter/requests", icon: ClipboardDocumentListIcon },
     { name: "Notifications", path: "/shelter/notifications", icon: BellIcon },
@@ -102,8 +104,8 @@ export default function ShelterSidebar() {
   ];
 
   const handleLogout = () => {
-    logout();          // ✅ clears token + user
-    navigate("/");     // ✅ redirect to home/login
+    logout();          //  clears token + user
+    navigate("/");     // redirect to home/login
   };
 
   return (
