@@ -6,6 +6,8 @@ import ShelterDashboard from '../pages/Shelter/shelterpage';
 import BrowseShelters from '../pages/petowner/browseShelter';
 import ShelterDetails from '../pages/petowner/shelterDetails';
 import PetProfilePage from '../pages/petowner/petProfilepage';
+import SearchResultsPage from '../pages/petowner/searchResultpage';
+import FavoritesPage from '../pages/petowner/favoritesPages';
 
 
 export default function AppRouter() {
@@ -18,10 +20,9 @@ export default function AppRouter() {
         <Route path="/browseshelter" element={<BrowseShelters />} />
         <Route path="/shelters/:id" element={<ShelterDetails />} />
         <Route path="/petprofile" element={<PetProfilePage />} />
+        <Route path="/searchshelters" element={<SearchResultsPage />} />
+        <Route path="/favorites" element={<FavoritesPage />} />
 
-
-
-       
 
     </Routes>
     </BrowserRouter>

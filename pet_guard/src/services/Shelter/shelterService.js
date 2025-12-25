@@ -16,7 +16,9 @@ return req;
 export const getMyShelter = () => API.get("/shelters/me");
 
 
-export const saveShelter = (formData) =>
-API.post("/shelters", formData, {
-headers: { "Content-Type": "multipart/form-data" },
-});
+export const saveShelter = async (formData) => {
+  const res = await API.post("/shelters", formData, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+  return res.data; 
+};

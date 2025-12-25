@@ -294,6 +294,7 @@ export default function ShelterDashboard() {
     const fd = new FormData();
     fd.append("name", data.name || "");
     fd.append("location", data.location || "");
+    fd.append("contact", data.contact || "");
     fd.append("description", data.description || "");
     fd.append("pricePerDay", data.pricePerDay || "");
     fd.append("status", data.status || "");
@@ -310,27 +311,30 @@ export default function ShelterDashboard() {
       if (file instanceof File) fd.append("documents", file);
     });
 
-    try {
-      await handleSave(fd);
-      setRemovedPhotos([]);
-      setRemovedDocuments([]);
-      setEditMode(false);
-      toast.success("Changes saved successfully!", {
-        className: "custom-toast",
-        bodyClassName: "custom-toast-body",
-      });
-    } catch (error) {
-      console.error("Failed to save shelter:", error);
-      toast.error(" Failed to save changes.", {
-        className: "custom-toast",
-        bodyClassName: "custom-toast-body",
+    
+  try {
+    await handleSave(fd); // state already updated inside
+    setPhotos(data.photos || []);
+    setDocuments(data.documents || []);
+    setRemovedPhotos([]);
+    setRemovedDocuments([]);
+    setEditMode(false);
+    toast.success("Changes saved successfully!", {
+      className: "custom-toast",
+      bodyClassName: "custom-toast-body",
+    });
+  } catch (error) {
+    console.error("Failed to save shelter:", error);
+    toast.error(" Failed to save changes.", {
+      className: "custom-toast",
+      bodyClassName: "custom-toast-body",
       });
     }
   };
 
   const handleCancel = () => {
     setEditMode(false);
-    setPhotos(data.photos || []);
+    setPhotos(data?.photos || []);
     setDocuments(data.documents || []);
     setRemovedPhotos([]);
     setRemovedDocuments([]);
@@ -364,18 +368,33 @@ export default function ShelterDashboard() {
             />
           </div>
 
-          {/* Location */}
-          <div className="mb-5">
-            <label className="block text-sm font-medium mb-2">Location</label>
-            <input
-              disabled={!editMode}
-              value={data.location || ""}
-              onChange={(e) =>
-                setData((prev) => ({ ...prev, location: e.target.value }))
-              }
-              className="w-full border rounded px-4 py-3 shadow-inner disabled:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-200"
-            />
-          </div>
+<div className="mb-5 flex flex-col md:flex-row gap-4">
+  {/* Location */}
+  <div className="flex-1">
+    <label className="block text-sm font-medium mb-2">Location</label>
+    <input
+      disabled={!editMode}
+      value={data.location || ""}
+      onChange={(e) =>
+        setData((prev) => ({ ...prev, location: e.target.value }))
+      }
+      className="w-full border rounded px-4 py-3 shadow-inner disabled:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-200"
+    />
+  </div>
+
+  {/* Contact */}
+  <div className="flex-1">
+    <label className="block text-sm font-medium mb-2">Contact</label>
+    <input
+      disabled={!editMode}
+      value={data.contact || ""}
+      onChange={(e) =>
+        setData((prev) => ({ ...prev, contact: e.target.value }))
+      }
+      className="w-full border rounded px-4 py-3 shadow-inner disabled:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-200"
+    />
+  </div>
+</div>
 
           {/* Description */}
           <div className="mb-5">

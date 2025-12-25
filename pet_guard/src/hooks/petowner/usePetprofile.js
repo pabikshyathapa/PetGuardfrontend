@@ -1,39 +1,48 @@
 import { useState, useEffect } from "react";
 import { getPets, createPet, updatePet, deletePet } from "../../services/petowner/petProfile";
+import { useAuth } from "../../auth/AuthProvider";
 
 export const usePets = () => {
+  const { user } = useAuth();
   const [pets, setPets] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchPets = async () => {
-    setLoading(true);
     try {
+      setLoading(true);
       const data = await getPets();
       setPets(data);
-    } catch (err) {
-      console.error(err);
+    } catch {
+      setPets([]);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  };
-
-  const addPet = async (formData) => {
-    await createPet(formData);
-    await fetchPets();
-  };
-
-  const editPet = async (id, formData) => {
-    await updatePet(id, formData);
-    await fetchPets();
-  };
-
-  const removePet = async (id) => {
-    await deletePet(id);
-    await fetchPets();
   };
 
   useEffect(() => {
+    if (!user) {
+      setPets([]);
+      setLoading(false);
+      return;
+    }
     fetchPets();
-  }, []);
+  }, [user]);
 
-  return { pets, loading, fetchPets, addPet, editPet, removePet };
+  return {
+    pets,
+    loading,
+    fetchPets,
+    addPet: async (data) => {
+      await createPet(data);
+      fetchPets();
+    },
+    editPet: async (id, data) => {
+      await updatePet(id, data);
+      fetchPets();
+    },
+    removePet: async (id) => {
+      await deletePet(id);
+      fetchPets();
+    },
+  };
 };

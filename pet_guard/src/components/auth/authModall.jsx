@@ -35,60 +35,7 @@ const AuthModal = ({ type = "login", onClose, onLoginSuccess }) => {
     return () => document.removeEventListener("mousedown", handler);
   }, [onClose]);
 
-//   const handleSubmit = async (e) => {
-//   e.preventDefault();
-
-//   try {
-//     if (isLogin) {
-//       const res = await loginUser({
-//         email: form.email,
-//         password: form.password,
-//       });
-
-//       const userData = res.data.data; // contains role from backend
-
-//       localStorage.setItem("token", res.data.token);
-//       localStorage.setItem("user", JSON.stringify(userData));
-
-//       setMessage("Login successful!");
-
-//       // ✅ PASS ROLE TO HEADER
-//       onLoginSuccess(userData.role);
-
-//     } else {
-//       await registerUser({ ...form, role });
-
-//       setMessage("Registration successful! You can login now.");
-//       resetForm();
-//       setCurrentType("login");
-//       setStep("form");
-//     }
-//   } catch (err) {
-//     setMessage(err.response?.data?.message || "Error occurred");
-//   }
-// };
-
-// const handleSubmit = async (e) => {
-//   e.preventDefault();
-//   try {
-//     if (isLogin) {
-//       const res = await loginUser({ email: form.email, password: form.password });
-//       const userData = res.data.data; // user info
-//       const token = res.data.token;
-
-//       // ✅ update AuthProvider immediately
-//       login(userData, token); // <--- THIS UPDATES THE CONTEXT
-
-//       setMessage("Login successful!");
-//       onLoginSuccess(userData.role); // optional
-//     }
-//     // ... register flow remains same
-//   } catch (err) {
-//     setMessage(err.response?.data?.message || "Error occurred");
-//   }
-// };
-
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
   e.preventDefault();
 
   try {
@@ -112,7 +59,7 @@ const handleSubmit = async (e) => {
 
       // Pass role to Header / parent
       if (onLoginSuccess) {
-        onLoginSuccess(userData.role);
+        onLoginSuccess(userData);
       }
 
     } else {

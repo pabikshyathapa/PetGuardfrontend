@@ -33,9 +33,12 @@ export default function useShelterProfile() {
       .finally(() => setLoading(false));
   }, []);
 
-  const handleSave = async (formData) => {
-    await saveShelter(formData);
-  };
+ const handleSave = async (formData) => {
+  const res = await saveShelter(formData); // saveShelter returns the updated shelter
+  if (res.data) {
+    setData(res.data); // ✅ update state immediately
+  }
+};
 
   return {
     data,

@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import AppRouter from "./router/AppRouter.jsx";
 import AuthContextProvider from "./auth/AuthProvider.jsx";
+import { FavoritesProvider } from "./components/petowner/favoritescontext.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "swiper/css";
@@ -12,7 +13,9 @@ import "swiper/css/pagination";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthContextProvider>
+      <FavoritesProvider>
       <AppRouter />
+      </FavoritesProvider>
       {/* ToastContainer added globally */}
       <ToastContainer
         position="top-right"

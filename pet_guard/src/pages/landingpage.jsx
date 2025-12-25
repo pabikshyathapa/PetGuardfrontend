@@ -1,35 +1,68 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../layouts/Header";
 import Footer from "../layouts/Footer";
-import { FaRegHeart, FaHandsHelping, FaLink } from "react-icons/fa";
 import { FaArrowRight } from "react-icons/fa";
 
-
 export default function LandingPage() {
+  // 1. Array of images - replace these paths with your actual images
+  const images = [
+    "/images/main.png",
+    "/images/main2.png",
+    // "/images/main3.png",
+  ];
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // 2. Logic to change image every 5 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 12000);
+
+    return () => clearInterval(timer); // Cleanup on unmount
+  }, [images.length]);
+
   return (
     <div className="w-full min-h-screen" style={{ backgroundColor: "#F3F1EE" }}>
       <Header />
-      {/* HERO SECTION */}
-      <section className="relative w-full pt-20">
-        <img src="/images/main.png" className="w-full h object-cover" />
 
-        {/* Hero Text */}
-        <div className="absolute top-1/3 left-20">
+      {/* HERO SECTION - Removed pt-20 to eliminate the gap */}
+      <section className="relative w-full">
+        <div className="relative w-full overflow-hidden shadow-[0_10px_20px_rgba(0,0,0,0.12)]">
+          {/* Invisible spacer to maintain original height/aspect ratio */}
+          <img
+            src={images[0]}
+            className="w-full h-auto object-cover invisible"
+            alt="spacer"
+          />
+
+          {/* Sliding images */}
+          {images.map((img, index) => (
+            <img
+              key={index}
+              src={img}
+              className={`absolute top-0 left-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out ${
+                index === currentIndex ? "opacity-100" : "opacity-0"
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* Hero Text - Adjusted top position to keep it centered despite removed padding */}
+        <div className="absolute top-1/4 left-20 z-10">
           <h2 className="text-4xl font-bold mb-6" style={{ color: "#183D8B" }}>
             Find and Book Today.
           </h2>
 
-          {/* Search Bar */}
-          <div className="relative w-80">
+          <div className="relative w-[370px]">
             <input
               type="text"
               placeholder="Search shelters..."
-              className="w-[330px] px-5 py-3 pr-24 border shadow-md outline-none rounded-[20px]"
+              className="w-full px-5 py-3 pr-32 border shadow-md outline-none rounded-[20px]"
             />
 
-            {/* Button inside search bar */}
             <button
-              className="absolute right-1 top-1/2 -translate-y-1/2 px-5 py-2 text-white text-sm rounded-[14px] shadow"
+              className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 text-white text-sm rounded-[14px] shadow"
               style={{ backgroundColor: "#183D8B" }}
             >
               Search
@@ -39,8 +72,8 @@ export default function LandingPage() {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="py-16 text-center px-6">
-        <h2 className="text-3xl font-bold" style={{ color: "#183D8B" }}>
+      <section className="pt-20 pb-16 text-center px-6 -mt-12">
+        <h2 className="text-4xl font-semibold tracking-wide font-serif text-[#183D8B]">
           Why Choose PetGuard?
         </h2>
 
@@ -143,14 +176,14 @@ export default function LandingPage() {
           />
         </div>
 
-       <div className="text-center mt-10">
-  <button
-    className="text-white w-[200px] px-8 py-2 rounded-lg font-semibold shadow-md"
-    style={{ backgroundColor: "#183D8B" }}
-  >
-    Explore <FaArrowRight className="inline-block ml-1" />
-  </button>
-</div>
+        <div className="text-center mt-10">
+          <button
+            className="text-white w-[200px] px-8 py-2 rounded-lg font-semibold shadow-md"
+            style={{ backgroundColor: "#183D8B" }}
+          >
+            Explore <FaArrowRight className="inline-block ml-1" />
+          </button>
+        </div>
       </section>
 
       {/* FOOTER */}
