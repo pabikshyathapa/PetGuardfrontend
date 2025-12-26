@@ -115,7 +115,6 @@
 //   );
 // }
 
-// src/components/ShelterCard.jsx
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -204,6 +203,7 @@ export default function ShelterCard({ shelter }) {
           aria-label={isFavorited ? "Remove from favorites" : "Add to favorites"}
         >
           <FaHeart
+          size={15}
             className={`transition-all duration-300 ${
               isFavorited
                 ? "text-red-500 fill-red-500 scale-110"

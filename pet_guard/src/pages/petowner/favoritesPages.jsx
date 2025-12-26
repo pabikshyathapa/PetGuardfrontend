@@ -1,5 +1,3 @@
-// src/pages/petowner/FavoritesPage.jsx
-
 import { useEffect } from "react";
 import { useFavorites } from "../../components/petowner/favoritescontext";
 import ShelterCard from "../../components/petowner/browseSheltercard";
@@ -98,7 +96,7 @@ export default function FavoritesPage() {
               {/* Info Banner */}
               <div className="bg-blue-50 border-l-4 border-[#183D8B] p-4 rounded-lg mb-6">
                 <p className="text-[#183D8B] font-medium">
-                  💡 Click on any shelter card to view details, or click the
+                 Click on any shelter card to view details, or click the
                   heart to remove from favorites
                 </p>
               </div>

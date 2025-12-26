@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 const RegisterForm = ({
   form,
   message,
@@ -12,11 +12,27 @@ const RegisterForm = ({
   role,
   IMAGE_PATH,
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handlePhoneChange = (e) => {
+    const { value } = e.target;
+    const onlyNums = value.replace(/[^0-9]/g, "");
+
+    const mockEvent = {
+      target: {
+        name: "phone",
+        value: onlyNums,
+      },
+    };
+    handleChange(mockEvent);
+  };
   return (
     <div className="flex w-full">
-      
-      {/* Left Image (same UI as ChooseRole) */}
-      <div className="w-1/2 border-r flex items-center justify-center p-4">
+      {/* Left Image */}
+      <div className="w-1/2 flex items-center justify-center p-4">
         <img
           src={IMAGE_PATH}
           alt="Register"
@@ -26,10 +42,7 @@ const RegisterForm = ({
 
       {/* Right Form */}
       <div className="w-1/2 p-8 flex flex-col justify-center">
-        <h3 className="text-xl font-medium mb-4">
-          Register{" "}
-          {/* <span className="capitalize text-[#183D8B]">{role}</span> */}
-        </h3>
+        <h3 className="text-xl font-medium mb-4">Register </h3>
 
         {message && <p className="text-red-600 mb-4">{message}</p>}
 
@@ -60,18 +73,27 @@ const RegisterForm = ({
             placeholder="Phone"
             className="p-3 rounded-lg bg-[#E6E6E6]"
             value={form.phone}
-            onChange={handleChange}
+            onChange={handlePhoneChange}
           />
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Create Password"
-            className="p-3 rounded-lg bg-[#E6E6E6]"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
+          {/* Password Input with Eye Icon */}
+          <div className="relative w-full">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Create Password"
+              className="p-3 rounded-lg bg-[#E6E6E6] w-full pr-10" // added padding-right for icon
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
+            <div
+              className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? <FaEye size={20} /> : <FaEyeSlash size={20} />}
+            </div>
+          </div>
 
           <button className="bg-[#183D8B] text-white py-3 rounded-lg mt-3">
             Register

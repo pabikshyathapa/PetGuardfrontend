@@ -1,5 +1,5 @@
-import React from "react";
-
+import React, { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 const LoginForm = ({
   form,
   message,
@@ -11,11 +11,11 @@ const LoginForm = ({
   setRole,
   IMAGE_PATH,
 }) => {
+  const [showPassword, setShowPassword] = useState(false);
   return (
     <div className="flex w-full">
-      
-      {/* Left Image (same UI everywhere) */}
-      <div className="w-1/2 border-r flex items-center justify-center p-4">
+      {/* Left Image  */}
+      <div className="w-1/2  flex items-center justify-center p-4">
         <img
           src={IMAGE_PATH}
           alt="Login"
@@ -40,15 +40,24 @@ const LoginForm = ({
             required
           />
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            className="p-3 rounded-lg bg-[#E6E6E6]"
-            value={form.password}
-            onChange={handleChange}
-            required
-          />
+          <div className="relative w-full">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Password"
+              className="p-3 rounded-lg bg-[#E6E6E6] w-full"
+              value={form.password}
+              onChange={handleChange}
+              onPaste={(e) => e.preventDefault()}
+              required
+            />
+            <div
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-600"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEye size={20} /> : <FaEyeSlash size={20} />}
+            </div>
+          </div>
 
           <button className="bg-[#183D8B] text-white py-3 rounded-lg mt-3">
             Login

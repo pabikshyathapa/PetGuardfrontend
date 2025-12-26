@@ -4,7 +4,7 @@ const ChooseRole = ({ IMAGE_PATH, onSelect }) => {
   return (
     <div className="flex w-full">
       {/* Left Image */}
-      <div className="w-1/2 border-r flex items-center justify-center p-4">
+      <div className="w-1/2 flex items-center justify-center p-4">
         <img
           src={IMAGE_PATH}
           alt="Pets"

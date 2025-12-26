@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import Header from "../layouts/Header";
 import Footer from "../layouts/Footer";
 import { FaArrowRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
 
 export default function LandingPage() {
   // 1. Array of images - replace these paths with your actual images
@@ -10,7 +12,7 @@ export default function LandingPage() {
     "/images/main2.png",
     // "/images/main3.png",
   ];
-
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
 
   // 2. Logic to change image every 5 seconds
@@ -178,10 +180,12 @@ export default function LandingPage() {
 
         <div className="text-center mt-10">
           <button
+             onClick={() => navigate("/browseshelter")}
             className="text-white w-[200px] px-8 py-2 rounded-lg font-semibold shadow-md"
             style={{ backgroundColor: "#183D8B" }}
           >
-            Explore <FaArrowRight className="inline-block ml-1" />
+            Explore <FaArrowRight className="inline-block ml-1"
+ />
           </button>
         </div>
       </section>
