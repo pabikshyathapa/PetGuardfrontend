@@ -436,7 +436,12 @@ export default function Header() {
 
             {user ? (
               <>
-                <span className="text-[#183D8B]">Hi, {user.name}</span>
+                <span
+                  className="text-[#183D8B] cursor-pointer hover:underline font-medium"
+                  onClick={() => handleIconClick("profile", "/profile")}
+                >
+                  Hi, {user.name}
+                </span>
                 <button
                   onClick={handleLogout}
                   className="ml-2 text-red-500 text-xs underline hover:text-red-700"

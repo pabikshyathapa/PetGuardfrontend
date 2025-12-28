@@ -349,7 +349,202 @@
 //   buttonGroup: { display: "flex", gap: "20px", marginTop: "45px" },
 //   textarea: { width: "100%", height: "110px", border: "none", outline: "none", resize: "none", fontSize: "15px", background: "transparent" }
 // };
-import React, { useState, useEffect } from "react";
+
+// import React, { useState, useEffect } from "react";
+// import Header from "../../layouts/Header";
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import { Navigation, Pagination } from "swiper";
+// import { FaEdit, FaPlus, FaMapMarkerAlt, FaUserEdit, FaSave, FaTimes } from "react-icons/fa";
+// import { usePets } from "../../hooks/petowner/usePetprofile";
+// import { updateUser } from "../../services/authService";
+// import { toast } from "react-toastify";
+
+// const InfoBox = ({ label, value, editMode, onChange, suffix = "" }) => (
+//   <div style={styles.infoBox}>
+//     <label style={styles.infoLabel}>{label}</label>
+//     {editMode ? (
+//       <input 
+//         value={value} 
+//         onChange={onChange} 
+//         style={styles.infoInput} 
+//         placeholder={`Enter ${label}...`}
+//       />
+//     ) : (
+//       <div style={styles.infoValue}>{value ? `${value}${suffix}` : "-"}</div>
+//     )}
+//   </div>
+// );
+
+// const OwnerField = ({ label, name, value, editMode, onChange }) => (
+//   <div>
+//     <label style={styles.smallLabel}>{label}</label>
+//     {editMode ? (
+//       <input name={name} value={value} onChange={onChange} style={styles.ownerInputEdit} />
+//     ) : (
+//       <div style={styles.staticBox}>{value || "—"}</div>
+//     )}
+//   </div>
+// );
+
+// export default function PetProfilePage() {
+//   const { pets, loading, addPet, editPet,removePet } = usePets();
+//   const [selectedPet, setSelectedPet] = useState(null);
+//   const [editMode, setEditMode] = useState(false);
+//   const [previewUrl, setPreviewUrl] = useState(null);
+
+//   const [ownerEditMode, setOwnerEditMode] = useState(false);
+//   const [loggedInUser, setLoggedInUser] = useState(null);
+//   const [ownerForm, setOwnerForm] = useState({ name: "", email: "", phone: "" });
+//   const [originalOwner, setOriginalOwner] = useState(null);
+
+//   const initialForm = {
+//     petName: "", location: "", type: "", breed: "", gender: "", 
+//     age: "", weight: "", health: "", characteristics: "",
+//     emergencyContactName: "", emergencyContactPhone: "", photo: null,
+//   };
+
+//   const [formData, setFormData] = useState(initialForm);
+
+//   useEffect(() => {
+//     const user = JSON.parse(localStorage.getItem("user"));
+//     if (user) {
+//       setLoggedInUser(user);
+//       setOwnerForm({ name: user.name, email: user.email, phone: user.phone });
+//       setOriginalOwner({ name: user.name, email: user.email, phone: user.phone });
+//     }
+//   }, []);
+
+//   useEffect(() => {
+//   if (loading) return;
+
+//   // CASE 1: First-time user (no pets)
+//   if (pets.length === 0) {
+//     setEditMode(true);
+//     setSelectedPet(null);
+//     setFormData(initialForm);
+//     return;
+//   }
+
+//   // if (!selectedPet) {
+//   //   handleSelectPet(pets[0]);
+//   // }
+//   if (!selectedPet && pets.length > 0) {
+//   handleSelectPet(pets[0]);
+// }
+// }, [pets, loading]);
+
+//   const handleSelectPet = (pet) => {
+//     setSelectedPet(pet);
+//     setEditMode(false);
+//     setPreviewUrl(null);
+//     setFormData({
+//       petName: pet.petName || "",
+//       location: pet.location || "",
+//       type: pet.type || "",
+//       breed: pet.breed || "",
+//       gender: pet.gender || "",
+//       age: pet.age || "",
+//       weight: pet.weight || "",
+//       health: pet.health || "",
+//       characteristics: Array.isArray(pet.characteristics) ? pet.characteristics.join(", ") : pet.characteristics || "",
+//       emergencyContactName: pet.emergencyContact?.name || "",
+//       emergencyContactPhone: pet.emergencyContact?.phone || "",
+//       photo: null,
+//     });
+//   };
+
+//   const handleOwnerSave = async () => {
+//     const noChanges = ownerForm.name === originalOwner.name && ownerForm.email === originalOwner.email && ownerForm.phone === originalOwner.phone;
+//     if (noChanges) return setOwnerEditMode(false);
+//     try {
+//       const token = localStorage.getItem("token");
+//       const response = await updateUser(ownerForm, token);
+//       const updatedUser = response.data.data || response.data;
+//       setLoggedInUser(updatedUser);
+//       setOriginalOwner(updatedUser);
+//       localStorage.setItem("user", JSON.stringify(updatedUser));
+//       setOwnerEditMode(false);
+//       toast.success("Owner information updated!");
+//     } catch (err) {
+//       toast.error("Failed to update.");
+//     }
+//   };
+//   const handleRemovePet = async () => {
+//   if (!selectedPet?._id) return;
+
+//   const confirmDelete = window.confirm(
+//     `Are you sure you want to remove ${selectedPet.petName}?`
+//   );
+//   if (!confirmDelete) return;
+
+//   try {
+//     const deletedId = selectedPet._id;
+
+//     await removePet(deletedId);
+//     toast.success("Pet removed successfully!");
+
+//     // SAFELY select next pet
+//     setSelectedPet((prev) => {
+//       const remaining = pets.filter((p) => p._id !== deletedId);
+//       return remaining.length > 0 ? remaining[0] : null;
+//     });
+
+//     setEditMode(false);
+//   } catch (err) {
+//     toast.error("Failed to remove pet.");
+//   }
+// };
+
+//   const handleSubmit = async () => {
+//   try {
+//     const data = new FormData();
+
+//     // Add all form fields
+//     Object.keys(formData).forEach((key) => {
+//       if (key === "characteristics") {
+//         // Convert comma-separated string to array
+//         const charArray = formData.characteristics
+//           .split(",")
+//           .map((c) => c.trim())
+//           .filter((c) => c !== "");
+//         charArray.forEach((char) => data.append("characteristics[]", char));
+//       } else if (key === "photo" && formData[key]) {
+//         data.append("photo", formData[key]);
+//       } else if (key !== "emergencyContactName" && key !== "emergencyContactPhone") {
+//         data.append(key, formData[key]);
+//       }
+//     });
+
+//     // Emergency contact as JSON string
+//     data.append(
+//       "emergencyContact",
+//       JSON.stringify({
+//         name: formData.emergencyContactName || "",
+//         phone: formData.emergencyContactPhone || "",
+//       })
+//     );
+
+//     if (selectedPet && selectedPet._id && selectedPet._id !== "new") {
+//       // Update existing pet
+//       await editPet(selectedPet._id, data);
+//       toast.success("Pet profile updated!");
+//     } else {
+//       // Add new pet
+//       await addPet(data);
+//       toast.success("New pet added!");
+//     }
+
+//     setEditMode(false);
+//     fetchPets(); // refresh list
+//   } catch (err) {
+//     console.error("SAVE PET ERROR:", err.response?.data || err.message);
+//     toast.error("Error saving pet profile");
+//   }
+// };
+
+//   if (loading) return <div style={{ padding: "100px", textAlign: "center" }}>Loading Profile...</div>;
+
+import React, { useState, useEffect } from "react"; 
 import Header from "../../layouts/Header";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper";
@@ -384,13 +579,30 @@ const OwnerField = ({ label, name, value, editMode, onChange }) => (
     )}
   </div>
 );
+const DeleteModal = ({ isOpen, onCancel, onConfirm, petName }) => {
+  if (!isOpen) return null;
+  return (
+    <div style={styles.modalOverlay}>
+      <div style={styles.modalContent}>
+        <h3 style={{ color: "#183D8B", marginBottom: "15px" }}>Remove Pet?</h3>
+        <p style={{ color: "#4A5568", marginBottom: "25px" }}>
+          Are you sure you want to remove <strong>{petName}</strong>?
+        </p>
+        <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
+          <button onClick={onCancel} style={styles.modalCancelBtn}>Cancel</button>
+          <button onClick={onConfirm} style={styles.modalConfirmBtn}>Delete</button>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default function PetProfilePage() {
-  const { pets, loading, addPet, editPet } = usePets();
+  const { pets, loading, fetchPets, addPet, editPet, removePet } = usePets();
   const [selectedPet, setSelectedPet] = useState(null);
   const [editMode, setEditMode] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState(null);
-
+  const [previewUrl, setPreviewUrl] = useState({});
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); 
   const [ownerEditMode, setOwnerEditMode] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [ownerForm, setOwnerForm] = useState({ name: "", email: "", phone: "" });
@@ -414,19 +626,30 @@ export default function PetProfilePage() {
   }, []);
 
   useEffect(() => {
-    if (!loading && pets.length === 0) {
+    if (loading) return;
+
+    if (pets.length === 0) {
       setEditMode(true);
       setSelectedPet(null);
       setFormData(initialForm);
-    } else if (pets.length > 0 && !selectedPet && !editMode) {
+      return;
+    }
+
+    if (!selectedPet && pets.length > 0) {
       handleSelectPet(pets[0]);
     }
   }, [pets, loading]);
 
+  const handlePhotoChange = (petId, file) => {
+  if (!file) return;
+  setFormData({ ...formData, photo: file });
+  setPreviewUrl((prev) => ({ ...prev, [petId]: URL.createObjectURL(file) }));
+};
+
   const handleSelectPet = (pet) => {
     setSelectedPet(pet);
     setEditMode(false);
-    setPreviewUrl(null);
+    // setPreviewUrl(null);
     setFormData({
       petName: pet.petName || "",
       location: pet.location || "",
@@ -460,39 +683,77 @@ export default function PetProfilePage() {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleRemovePet = async () => {
+    if (!selectedPet?._id) return;
     try {
-      const data = new FormData();
-      Object.keys(formData).forEach(key => {
-        if (key === 'characteristics') {
-          const charArray = formData.characteristics.split(",").map(i => i.trim()).filter(i => i !== "");
-          charArray.forEach(char => data.append("characteristics[]", char));
-        } else if (key === 'photo' && formData[key]) {
-          data.append("photo", formData[key]);
-        } else if (key !== 'emergencyContactName' && key !== 'emergencyContactPhone' && key !== 'characteristics') {
-          data.append(key, formData[key]);
-        }
+      const deletedId = selectedPet._id;
+      await removePet(deletedId);
+      toast.success("Pet removed successfully!");
+      setIsDeleteModalOpen(false); // Close modal on success
+      
+      setSelectedPet((prev) => {
+        const remaining = pets.filter((p) => p._id !== deletedId);
+        return remaining.length > 0 ? remaining[0] : null;
       });
-      data.append("emergencyContact", JSON.stringify({
-        name: formData.emergencyContactName,
-        phone: formData.emergencyContactPhone,
-      }));
-
-      if (selectedPet && selectedPet._id !== "new") {
-        await editPet(selectedPet._id, data);
-        toast.success("Pet profile updated!");
-      } else {
-        await addPet(data);
-        toast.success("New pet added!");
-      }
       setEditMode(false);
     } catch (err) {
-      toast.error("Error saving pet profile");
+      toast.error("Failed to remove pet.");
     }
   };
 
-  if (loading) return <div style={{ padding: "100px", textAlign: "center" }}>Loading Profile...</div>;
+  const handleSubmit = async () => {
+  try {
+    const data = new FormData();
 
+    Object.keys(formData).forEach((key) => {
+      if (key === "characteristics") {
+        const charArray = formData.characteristics
+          .split(",")
+          .map((c) => c.trim())
+          .filter((c) => c !== "");
+        charArray.forEach((char) => data.append("characteristics[]", char));
+      } else if (key === "photo" && formData[key]) {
+        data.append("photo", formData[key]);
+      } else if (key !== "emergencyContactName" && key !== "emergencyContactPhone") {
+        data.append(key, formData[key]);
+      }
+    });
+
+    data.append(
+      "emergencyContact",
+      JSON.stringify({
+        name: formData.emergencyContactName || "",
+        phone: formData.emergencyContactPhone || "",
+      })
+    );
+
+    let updatedPetId;
+
+    if (selectedPet && selectedPet._id && selectedPet._id !== "new") {
+      await editPet(selectedPet._id, data);
+      toast.success("Pet profile updated!");
+      updatedPetId = selectedPet._id;
+    } else {
+      const newPet = await addPet(data);
+      toast.success("New pet added!");
+      updatedPetId = newPet._id || "new";
+    }
+
+    setEditMode(false);
+
+    // Fetch updated pets
+    const updatedPets = await fetchPets();
+
+    // Set the selected pet to the one just saved
+    const updatedPet = updatedPets.find((p) => p._id === updatedPetId) || updatedPets[0];
+    handleSelectPet(updatedPet);
+
+    // Reset preview for this pet
+    setPreviewUrl((prev) => ({ ...prev, [updatedPet._id]: null }));
+  } catch (err) {
+  }
+};
+  if (loading) return <div style={{ padding: "100px", textAlign: "center" }}>Loading Profile...</div>;
   return (
     <div style={{ backgroundColor: "#F3F1EE", minHeight: "100vh", paddingBottom: "40px" }}>
       <Header />
@@ -511,31 +772,41 @@ export default function PetProfilePage() {
           )}
         </div>
 
-        <Swiper modules={[Navigation, Pagination]} navigation pagination={{ clickable: true }} onSlideChange={(s) => !editMode && pets[s.activeIndex] && handleSelectPet(pets[s.activeIndex])}>
+        <Swiper
+  modules={[Navigation, Pagination]}
+  navigation
+  pagination={{ clickable: true }}
+  onSlideChange={(s) => {
+    if (editMode) return;
+
+    const pet = pets[s.activeIndex];
+    if (pet?._id) {
+      handleSelectPet(pet);
+    }
+  }}
+>
           {(editMode && !selectedPet ? [{ _id: "new", petName: "New Pet" }] : (pets.length > 0 ? pets : [{_id: "empty", petName: "Add your first pet"}])).map((pet) => (
             <SwiperSlide key={pet._id}>
               <div style={styles.card}>
                 {/* FIXED: Reduced marginBottom from 40px to 20px */}
                 <div style={{ textAlign: "center", marginBottom: "20px" }}>
-                  <div style={styles.imageWrapper}>
-                    <img 
-                      src={previewUrl || (pet.photo ? `http://localhost:5050/uploads/${pet.photo}` : "https://via.placeholder.com/150")} 
-                      style={styles.profileImg} 
-                      alt="" 
-                    />
-                    {editMode && (
-                      <div style={styles.fileUploadOverlay}>
-                        <input type="file" onChange={(e) => {
-                          const file = e.target.files[0];
-                          if(file) {
-                            setFormData({...formData, photo: file});
-                            setPreviewUrl(URL.createObjectURL(file));
-                          }
-                        }} style={styles.hiddenFileInput} />
-                        <span style={{fontSize: '11px', color: '#fff', fontWeight: 'bold'}}>UPLOAD</span>
-                      </div>
-                    )}
-                  </div>
+                <div style={styles.imageWrapper}>
+  <img 
+    src={previewUrl[pet._id] || (pet.photo ? `http://localhost:5050/uploads/${pet.photo}` : "https://via.placeholder.com/150")} 
+    style={styles.profileImg} 
+    alt="" 
+  />
+  {editMode && (
+    <div style={styles.fileUploadOverlay}>
+      <input 
+        type="file" 
+        onChange={(e) => handlePhotoChange(pet._id, e.target.files[0])} 
+        style={styles.hiddenFileInput} 
+      />
+      <span style={{fontSize: '11px', color: '#fff', fontWeight: 'bold'}}>UPLOAD</span>
+    </div>
+  )}
+</div>
                   {editMode ? (
                     <input name="petName" value={formData.petName} onChange={(e) => setFormData({...formData, petName: e.target.value})} style={styles.nameInput} placeholder="Pet's Name" />
                   ) : <h1 style={styles.petName}>{pet.petName}</h1>}
@@ -608,20 +879,52 @@ export default function PetProfilePage() {
                   </div>
                 </div>
 
-                {editMode && (
-                  <div style={styles.buttonGroup}>
-                    <button onClick={handleSubmit} style={styles.saveBtn}>Save Profile</button>
-                    <button onClick={() => { setEditMode(false); if (pets.length > 0) handleSelectPet(pets[0]); }} style={styles.cancelBtn}>Cancel</button>
-                  </div>
-                )}
+               {editMode && (
+  <div style={styles.buttonGroup}>
+    <button onClick={handleSubmit} style={styles.saveBtn}>
+      Save Profile
+    </button>
+
+    <button
+      onClick={() => {
+        setEditMode(false);
+        if (pets.length > 0) handleSelectPet(pets[0]);
+      }}
+      style={styles.cancelBtn}
+    >
+      Cancel
+    </button>
+  </div>
+)}
+
+{/* REMOVE PET BUTTON (only for existing pets) */}
+{!editMode && selectedPet?._id && selectedPet._id !== "new" && (
+  <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "25px" }}>
+    <button
+      onClick={() => setIsDeleteModalOpen(true)}
+      style={styles.deleteBtnSmall}
+    >
+      Remove This Pet
+    </button>
+  </div>
+)}
+
               </div>
             </SwiperSlide>
           ))}
         </Swiper>
       </main>
+      {/* ADD THIS HERE: */}
+      <DeleteModal 
+        isOpen={isDeleteModalOpen} 
+        onCancel={() => setIsDeleteModalOpen(false)} 
+        onConfirm={handleRemovePet} 
+        petName={selectedPet?.petName} 
+      />
     </div>
   );
 }
+
 
 const styles = {
   actionBar: { display: "flex", justifyContent: "flex-end", gap: "15px", marginBottom: "15px" },
@@ -655,5 +958,11 @@ const styles = {
   saveBtn: { flex: 1, background: "#183D8B", color: "#fff", border: "none", padding: "15px", borderRadius: "10px", cursor: "pointer", fontWeight: "800" },
   cancelBtn: { flex: 1, background: "#E2E8F0", color: "#4A5568", border: "none", padding: "15px", borderRadius: "10px", cursor: "pointer", fontWeight: "800" },
   buttonGroup: { display: "flex", gap: "15px", marginTop: "30px" },
-  textarea: { width: "100%", height: "90px", border: "none", outline: "none", resize: "none", fontSize: "14px", background: "transparent", color: "#2D3748", fontWeight: "500" }
+  textarea: { width: "100%", height: "90px", border: "none", outline: "none", resize: "none", fontSize: "14px", background: "transparent", color: "#2D3748", fontWeight: "500" },
+  deleteBtnSmall: {background: "#E53E3E",color: "#fff",border: "none",padding: "8px 20px",borderRadius: "8px",cursor: "pointer",fontWeight: "700",fontSize: "13px", transition: "background 0.2s",},
+  modalOverlay: { position: "fixed",top: 0,left: 0,width: "100%",height: "100%",background: "rgba(0, 0, 0, 0.5)",display: "flex",justifyContent: "center",alignItems: "center",zIndex: 1000,},
+  modalContent: {background: "#fff",padding: "30px",borderRadius: "15px",width: "380px",textAlign: "center",boxShadow: "0 10px 25px rgba(0,0,0,0.1)",},
+  modalCancelBtn: { background: "#E2E8F0",color: "#4A5568",border: "none",padding: "10px 20px",borderRadius: "8px",marginRight: "10px",cursor: "pointer",fontWeight: "600",},
+  modalConfirmBtn: {background: "#E53E3E",color: "#fff",border: "none",padding: "10px 20px",borderRadius: "8px",cursor: "pointer",fontWeight: "600",},
 };
+

@@ -36,13 +36,40 @@ export const usePets = () => {
       await createPet(data);
       fetchPets();
     },
-    editPet: async (id, data) => {
-      await updatePet(id, data);
-      fetchPets();
-    },
+    // editPet: async (id, data) => {
+    //   await updatePet(id, data);
+    //   fetchPets();
+    // },
+    editPet: async (id, formData) => {
+  try {
+    const res = await updatePet(id, formData);
+    console.log("Pet updated:", res.pet);
+    await fetchPets();
+  } catch (error) {
+    console.error("EDIT PET ERROR:", error.response?.data || error.message);
+    throw error;
+  }
+},
+addPet: async (data) => {
+  try {
+    const res = await createPet(data);
+    console.log("Pet added:", res.pet);
+    await fetchPets();
+  } catch (error) {
+    console.error("ADD PET ERROR:", error.response?.data || error.message);
+    throw error;
+  }
+},
     removePet: async (id) => {
-      await deletePet(id);
-      fetchPets();
-    },
+  if (!id) return;
+
+  try {
+    await deletePet(id);
+
+    setPets((prev) => prev.filter((pet) => pet._id !== id));
+  } catch (error) {
+    console.error("Failed to delete pet");
+  }
+},
   };
 };

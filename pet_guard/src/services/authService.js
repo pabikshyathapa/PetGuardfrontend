@@ -16,3 +16,15 @@ export const updateUser = (data, token) => {
     },
   });
 };
+
+export const getProfile = (token) => {
+  return api.get("/profile", {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};
+
+export const changePassword = (data, token) => {
+  return api.put("/change-password", data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+};

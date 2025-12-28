@@ -13,7 +13,7 @@ import { notificationService } from "../../services/Shelter/notifiservice";
 
 export default function ShelterSidebar() {
   const navigate = useNavigate();
-  const { logout,user} = useAuth(); // ✅ use AuthProvider
+  const { logout,user} = useAuth(); // use AuthProvider
   const [unreadCount, setUnreadCount] = useState(0);
 
   const navItems = [
@@ -21,7 +21,7 @@ export default function ShelterSidebar() {
     { name: "Profile", path: "/shelter-dashboard", icon: UserCircleIcon },
     { name: "Requests", path: "/shelter/requests", icon: ClipboardDocumentListIcon },
     { name: "Notifications", path: "/shelter-notifications", icon: BellIcon },
-    { name: "Settings", path: "/shelter/settings", icon: Cog6ToothIcon },
+    { name: "Settings", path: "/sprofile", icon: Cog6ToothIcon },
   ];
 
   const handleLogout = () => {

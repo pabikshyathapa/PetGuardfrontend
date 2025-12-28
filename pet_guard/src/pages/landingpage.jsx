@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 
 export default function LandingPage() {
-  // 1. Array of images - replace these paths with your actual images
   const images = [
     "/images/main.png",
     "/images/main2.png",
@@ -14,8 +13,8 @@ export default function LandingPage() {
   ];
   const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [searchText, setSearchText] = useState("");
 
-  // 2. Logic to change image every 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
@@ -23,6 +22,28 @@ export default function LandingPage() {
 
     return () => clearInterval(timer); // Cleanup on unmount
   }, [images.length]);
+  const handleChange = (e) => {
+    setSearchFilters({ ...searchFilters, [e.target.name]: e.target.value });
+  };
+
+   const handleSearch = () => {
+    const parts = searchText.split(",").map((p) => p.trim());
+    let name = "";
+    let location = "";
+
+    if (parts.length === 1) {
+      location = parts[0];
+    } else if (parts.length >= 2) {
+      name = parts[0];
+      location = parts[1];
+    }
+
+    const query = new URLSearchParams(
+      Object.entries({ name, location }).filter(([_, v]) => v !== "")
+    ).toString();
+
+    navigate(`/searchshelters?${query}`);
+  };
 
   return (
     <div className="w-full min-h-screen" style={{ backgroundColor: "#F3F1EE" }}>
@@ -31,7 +52,6 @@ export default function LandingPage() {
       {/* HERO SECTION - Removed pt-20 to eliminate the gap */}
       <section className="relative w-full">
         <div className="relative w-full overflow-hidden shadow-[0_10px_20px_rgba(0,0,0,0.12)]">
-          {/* Invisible spacer to maintain original height/aspect ratio */}
           <img
             src={images[0]}
             className="w-full h-auto object-cover invisible"
@@ -50,7 +70,7 @@ export default function LandingPage() {
           ))}
         </div>
 
-        {/* Hero Text - Adjusted top position to keep it centered despite removed padding */}
+        {/* Search Input */}
         <div className="absolute top-1/4 left-20 z-10">
           <h2 className="text-4xl font-bold mb-6" style={{ color: "#183D8B" }}>
             Find and Book Today.
@@ -59,11 +79,14 @@ export default function LandingPage() {
           <div className="relative w-[370px]">
             <input
               type="text"
-              placeholder="Search shelters..."
+              placeholder="Type name, location..."
+              value={searchText}
+              onChange={(e) => setSearchText(e.target.value)}
               className="w-full px-5 py-3 pr-32 border shadow-md outline-none rounded-[20px]"
             />
 
             <button
+              onClick={handleSearch}
               className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 text-white text-sm rounded-[14px] shadow"
               style={{ backgroundColor: "#183D8B" }}
             >

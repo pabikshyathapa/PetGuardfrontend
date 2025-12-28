@@ -1,4 +1,6 @@
 import React from 'react'
+import { Navigate } from "react-router-dom";
+import { useAuth } from '../auth/AuthProvider';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import Landingpage from '../pages/landingpage'
 import PetOwnerDashboard from '../pages/petownerhpage';
@@ -9,9 +11,15 @@ import PetProfilePage from '../pages/petowner/petProfilepage';
 import SearchResultsPage from '../pages/petowner/searchResultpage';
 import FavoritesPage from '../pages/petowner/favoritesPages';
 import ShelterNotifications from '../pages/Shelter/notifipage';
+import Profile from '../pages/userprofilepage';
+import Shelteruserprofile from '../pages/Shelter/shelteruserprofile';
 
 
 export default function AppRouter() {
+
+  const { isAuthenticated, loading } = useAuth();
+
+  if (loading) return null; 
   return (
     <BrowserRouter>
       <Routes>
@@ -24,6 +32,14 @@ export default function AppRouter() {
         <Route path="/searchshelters" element={<SearchResultsPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/shelter-notifications" element={<ShelterNotifications />} />
+        <Route
+        path="/profile"
+        element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
+        />
+       <Route
+        path="/sprofile"
+        element={isAuthenticated ? <Shelteruserprofile /> : <Navigate to="/login" />}
+        />
 
 
 

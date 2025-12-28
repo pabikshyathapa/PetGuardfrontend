@@ -17,3 +17,12 @@ export const saveShelter = async (formData) => {
   });
   return res.data; 
 };
+
+export const searchShelters = async (filters) => {
+  const params = Object.fromEntries(
+    Object.entries(filters).filter(([_, v]) => v !== "")
+  );
+
+  const { data } = await API.get("/shelters/search", { params });
+  return data.data; 
+};

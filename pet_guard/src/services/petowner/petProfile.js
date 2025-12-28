@@ -13,17 +13,46 @@ export const getPets = async () => {
   return res.data;
 };
 
+// export const createPet = async (formData) => {
+//   const res = await axios.post(API_URL, formData, authConfig());
+//   return res.data;
+// };
+
+// export const updatePet = async (id, formData) => {
+//   const res = await axios.put(`${API_URL}/${id}`, formData, authConfig());
+//   return res.data;
+// };
 export const createPet = async (formData) => {
-  const res = await axios.post(API_URL, formData, authConfig());
+  const res = await axios.post(API_URL, formData, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return res.data;
 };
 
 export const updatePet = async (id, formData) => {
-  const res = await axios.put(`${API_URL}/${id}`, formData, authConfig());
+  const res = await axios.put(`${API_URL}/${id}`, formData, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return res.data;
 };
 
 export const deletePet = async (id) => {
-  const res = await axios.delete(`${API_URL}/${id}`, authConfig());
-  return res.data;
+  try {
+    if (!id) throw new Error("Pet ID missing");
+
+    const res = await axios.delete(`${API_URL}/${id}`, authConfig());
+    return res.data;
+  } catch (error) {
+    console.error(
+      "DELETE PET ERROR:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
 };
