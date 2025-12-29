@@ -21,3 +21,17 @@ export const notificationService = {
     return response.data;
   }
 };
+
+export const getNotifications = async () => {
+  const token = localStorage.getItem("token");
+  return axios.get(API_URL, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+};
+
+export const markNotificationRead = async (id) => {
+  const token = localStorage.getItem("token");
+  return axios.put(`${API_URL}/${id}/read`, {}, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+};

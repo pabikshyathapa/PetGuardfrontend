@@ -3,16 +3,15 @@ import { useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Thumbs, EffectCoverflow } from "swiper";
 import { MapPin, Phone, Info } from "lucide-react";
-import { FaHeart } from "react-icons/fa"; // Added FaHeart
-import { useFavorites } from "../../components/petowner/favoritescontext"; // Added Context
-import { toast } from "react-toastify"; // Added Toast
-
+import { FaHeart } from "react-icons/fa"; 
+import { useFavorites } from "../../components/petowner/favoritescontext"; 
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
 import "swiper/css/effect-coverflow";
-
 import {
   IMAGE_URL,
   getShelterById,
@@ -24,7 +23,7 @@ export default function ShelterDetails() {
   const { id } = useParams();
   const [shelter, setShelter] = useState(null);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-
+  const navigate = useNavigate();
   // Favorite Logic Hooks
   const { isFavorite, handleToggleFavorite } = useFavorites();
   const [isTogglingFavorite, setIsTogglingFavorite] = useState(false);
@@ -66,7 +65,7 @@ export default function ShelterDetails() {
   const isFavorited = isFavorite(shelter._id);
 
   return (
-    <div className="bg-white min-h-screen pb-20">
+    <div className="bg-white-100 min-h-screen pb-20">
       <Header />
       <div className="pt-20 px-4 max-w-7xl mx-auto">
         <div className="md:grid md:grid-cols-2 gap-12">
@@ -129,7 +128,13 @@ export default function ShelterDetails() {
                     {shelter.name}
                   </h1>
                   <div className="flex items-center gap-2 mt-2">
-                    <span className="bg-green-100 text-green-700 text-xs font-black px-3 py-1 rounded-full tracking-widest uppercase border border-green-200">
+                    <span
+                      className={`text-xs font-black px-3 py-1 rounded-full tracking-widest uppercase border transition-colors duration-300 ${
+                        shelter.status?.toUpperCase() === "UNAVAILABLE"
+                          ? "bg-red-100 text-red-700 border-red-200"
+                          : "bg-green-100 text-green-700 border-green-200"
+                      }`}
+                    >
                       {shelter.status || "AVAILABLE"}
                     </span>
                   </div>
@@ -236,12 +241,21 @@ export default function ShelterDetails() {
           </div>
         </div>
 
-        {/* Floating Book Now Button */}
         <div className="fixed bottom-8 left-0 right-0 z-50 px-4 pointer-events-none flex justify-center">
-          <button className="pointer-events-auto bg-[#183D8B] hover:bg-[#0f2a63] text-white text-xl font-bold px-16 py-5 rounded-full shadow-[0_10px_30px_rgba(24,61,139,0.4)] transition-all transform hover:scale-105 active:scale-95 flex items-center gap-3">
-            BOOK NOW
-          </button>
-        </div>
+  <button 
+    disabled={shelter.status?.toUpperCase() === "UNAVAILABLE"}
+    onClick={() => navigate(`/booking/${shelter._id}`, { state: { shelter } })}
+    className={`pointer-events-auto text-lg font-bold px-12 py-3 
+      rounded-lg 
+      shadow-lg transition-all transform flex items-center justify-center gap-3 uppercase tracking-wider
+      ${shelter.status?.toUpperCase() === "UNAVAILABLE" 
+        ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none border border-gray-400" 
+        : "bg-[#183D8B] hover:bg-[#122e6b] text-white hover:-translate-y-1 active:scale-95 shadow-[0_10px_25px_rgba(24,61,139,0.3)]"
+      }`}
+  >
+    {shelter.status?.toUpperCase() === "UNAVAILABLE" ? "NOT BOOKABLE" : "BOOK NOW"}
+  </button>
+</div>
       </div>
     </div>
   );

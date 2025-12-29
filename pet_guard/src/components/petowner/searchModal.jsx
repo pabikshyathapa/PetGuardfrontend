@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaTimes } from "react-icons/fa";
+import { FaTimes, FaSearch, FaMapMarkerAlt, FaTag, FaConciergeBell } from "react-icons/fa";
 
 export default function ShelterSearchModal({ isOpen, onClose }) {
   const navigate = useNavigate();
@@ -20,80 +20,115 @@ export default function ShelterSearchModal({ isOpen, onClose }) {
   };
 
   const handleSearch = () => {
-    // Build query string, ignore empty fields
     const query = new URLSearchParams(
       Object.entries(filters).filter(([_, v]) => v !== "")
     ).toString();
-
-    // Navigate to search result page with query
     navigate(`/searchshelters?${query}`);
-
-    // Close modal
     onClose();
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
-      <div className="bg-white w-full max-w-lg rounded-2xl p-6 relative shadow-xl">
-        {/* Close */}
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-black"
-        >
-          <FaTimes />
-        </button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      {/* Animated Backdrop */}
+      <div 
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity" 
+        onClick={onClose} 
+      />
 
-        <h2 className="text-2xl font-bold text-[#183D8B] mb-4">
-          Search Shelters
-        </h2>
+      {/* Modal Container */}
+      <div className="bg-white w-full max-w-lg rounded-2xl overflow-hidden relative shadow-2xl transform transition-all">
+        
+        {/* Header */}
+        <div className="bg-[#183D8B] p-6 text-white">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+          >
+            <FaTimes className="text-white" />
+          </button>
+          <h2 className="text-2xl font-bold flex items-center gap-2">
+            <FaSearch className="text-xl" /> Search Shelters
+          </h2>
+          <p className="text-blue-100 text-sm mt-1">Find the perfect place for your pet based on one or more of these criteria</p>
+        </div>
 
-        <div className="space-y-3">
-          <input
-            name="name"
-            placeholder="Shelter name"
-            onChange={handleChange}
-            className="w-full border rounded-xl px-4 py-2"
-          />
-          <input
-            name="location"
-            placeholder="Location"
-            onChange={handleChange}
-            className="w-full border rounded-xl px-4 py-2"
-          />
-
-          <div className="flex gap-3">
-            <input
-              name="minPrice"
-              type="number"
-              placeholder="Min price"
-              onChange={handleChange}
-              className="w-full border rounded-xl px-4 py-2"
-            />
-            <input
-              name="maxPrice"
-              type="number"
-              placeholder="Max price"
-              onChange={handleChange}
-              className="w-full border rounded-xl px-4 py-2"
-            />
+        {/* Form Body */}
+        <div className="p-6 space-y-5">
+          
+          {/* Shelter Name */}
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider ml-1">Shelter Name (Optional)</label>
+            <div className="relative">
+              <input
+                name="name"
+                placeholder="Search by name..."
+                onChange={handleChange}
+                className="w-full border-gray-200 border rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#183D8B] focus:border-transparent outline-none transition-all"
+              />
+            </div>
           </div>
 
-          <select
-            name="service"
-            onChange={handleChange}
-            className="w-full border rounded-xl px-4 py-2"
-          >
-            <option value="">All services</option>
-            <option value="Boarding">Boarding</option>
-            <option value="Daycare">Daycare</option>
-            <option value="Training">Training</option>
-          </select>
+          {/* Location */}
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider ml-1">Preffered Location</label>
+            <div className="relative">
+              <FaMapMarkerAlt className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+              <input
+                name="location"
+                placeholder="City"
+                onChange={handleChange}
+                className="w-full border-gray-200 border rounded-xl pl-11 pr-4 py-3 focus:ring-2 focus:ring-[#183D8B] focus:border-transparent outline-none transition-all"
+              />
+            </div>
+          </div>
 
+          {/* Price Range */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider ml-1">Min Price (Rs)</label>
+              <input
+                name="minPrice"
+                type="number"
+                placeholder="0"
+                onChange={handleChange}
+                className="w-full border-gray-200 border rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#183D8B] focus:border-transparent outline-none transition-all"
+              />
+            </div>
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider ml-1">Max Price (Rs)</label>
+              <input
+                name="maxPrice"
+                type="number"
+                placeholder="Any"
+                onChange={handleChange}
+                className="w-full border-gray-200 border rounded-xl px-4 py-3 focus:ring-2 focus:ring-[#183D8B] focus:border-transparent outline-none transition-all"
+              />
+            </div>
+          </div>
+
+          {/* Service Type */}
+          <div className="space-y-1">
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider ml-1">Required Service</label>
+            <div className="relative">
+              <FaConciergeBell className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+              <select
+                name="service"
+                onChange={handleChange}
+                className="w-full border-gray-200 border rounded-xl pl-11 pr-4 py-3 focus:ring-2 focus:ring-[#183D8B] focus:border-transparent outline-none appearance-none bg-white transition-all cursor-pointer"
+              >
+                <option value="">Services</option>
+                <option value="Boarding">Boarding</option>
+                <option value="Daycare">Daycare</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Search Button */}
           <button
             onClick={handleSearch}
-            className="w-full mt-4 py-3 rounded-xl bg-[#183D8B] text-white font-bold hover:bg-[#122e6b]"
+            className="w-full mt-4 py-4 rounded-xl bg-[#183D8B] text-white font-bold text-lg hover:bg-[#122e6b] shadow-lg shadow-blue-900/20 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
           >
-            Search
+            <FaSearch className="text-sm" /> Search Now
           </button>
         </div>
       </div>

@@ -13,6 +13,10 @@ import FavoritesPage from '../pages/petowner/favoritesPages';
 import ShelterNotifications from '../pages/Shelter/notifipage';
 import Profile from '../pages/userprofilepage';
 import Shelteruserprofile from '../pages/Shelter/shelteruserprofile';
+import BookingPage from '../pages/bookingpage';
+import PaymentSuccess from '../pages/paymentSuccess';
+import PaymentFailed from '../pages/paymentfaliure';
+import ShelterBookings from '../pages/Shelter/bookingmngpage';
 
 
 export default function AppRouter() {
@@ -32,6 +36,14 @@ export default function AppRouter() {
         <Route path="/searchshelters" element={<SearchResultsPage />} />
         <Route path="/favorites" element={<FavoritesPage />} />
         <Route path="/shelter-notifications" element={<ShelterNotifications />} />
+        <Route path="/booking/:id" element={<BookingPage />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
+        <Route path="/payment-failed" element={<PaymentFailed />} />
+        <Route path="/shelter/bookings" element={<ShelterBookings />} />
+
+
+
+
         <Route
         path="/profile"
         element={isAuthenticated ? <Profile /> : <Navigate to="/login" />}
@@ -39,6 +51,7 @@ export default function AppRouter() {
        <Route
         path="/sprofile"
         element={isAuthenticated ? <Shelteruserprofile /> : <Navigate to="/login" />}
+
         />
 
 

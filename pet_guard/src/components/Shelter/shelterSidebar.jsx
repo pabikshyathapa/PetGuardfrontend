@@ -5,6 +5,7 @@ import {
   Cog6ToothIcon,
   ArrowRightStartOnRectangleIcon,
   ClipboardDocumentListIcon,
+  CalendarIcon
 } from "@heroicons/react/24/outline";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/AuthProvider";
@@ -19,7 +20,7 @@ export default function ShelterSidebar() {
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: FaTachometerAlt },
     { name: "Profile", path: "/shelter-dashboard", icon: UserCircleIcon },
-    { name: "Requests", path: "/shelter/requests", icon: ClipboardDocumentListIcon },
+    { name: "Bookings", path: "/shelter/bookings", icon: CalendarIcon },
     { name: "Notifications", path: "/shelter-notifications", icon: BellIcon },
     { name: "Settings", path: "/sprofile", icon: Cog6ToothIcon },
   ];
