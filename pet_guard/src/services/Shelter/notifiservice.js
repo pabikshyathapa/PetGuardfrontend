@@ -15,23 +15,10 @@ export const notificationService = {
     const response = await axios.get(API_URL, getHeaders());
     return response.data;
   },
-
+  
   markAsRead: async (id) => {
     const response = await axios.put(`${API_URL}/${id}/read`, {}, getHeaders());
     return response.data;
   }
 };
 
-export const getNotifications = async () => {
-  const token = localStorage.getItem("token");
-  return axios.get(API_URL, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-};
-
-export const markNotificationRead = async (id) => {
-  const token = localStorage.getItem("token");
-  return axios.put(`${API_URL}/${id}/read`, {}, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-};

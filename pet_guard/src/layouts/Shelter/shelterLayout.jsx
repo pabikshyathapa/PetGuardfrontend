@@ -7,7 +7,7 @@ export default function ShelterLayout({ children }) {
       
       <ShelterSidebar />
 
-      <div className="flex-1 flex flex-col bg-[#F3F1EE] "> 
+      <div className="flex-1 flex flex-col bg-gray-100 "> 
 
         <ShelterHeader />
 

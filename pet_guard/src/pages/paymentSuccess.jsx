@@ -10,8 +10,8 @@ export default function PaymentSuccess() {
   useEffect(() => {
     // Auto redirect after 5 seconds
     const timer = setTimeout(() => {
-      navigate("/mybookings");
-    }, 5000);
+      navigate("/");
+    }, 20000);
 
     return () => clearTimeout(timer);
   }, [navigate]);
@@ -57,7 +57,7 @@ export default function PaymentSuccess() {
         {/* Action Buttons */}
         <div className="space-y-3">
           <button
-            onClick={() => navigate("/mybookings")}
+            onClick={() => navigate("/profile")}
             className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
           >
             View My Bookings
@@ -71,7 +71,7 @@ export default function PaymentSuccess() {
         </div>
 
         <p className="text-xs text-gray-500 mt-6">
-          Redirecting to your bookings in 5 seconds...
+          Redirecting to your bookings in 20 seconds...
         </p>
       </div>
     </div>

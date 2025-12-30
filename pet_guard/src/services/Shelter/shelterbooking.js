@@ -6,7 +6,7 @@ const getToken = () => localStorage.getItem("token");
 
 export const getShelterBookings = async () => {
   return axios.get(`${API}/shelter`, {
-    headers: { Authorization: `Bearer ${getToken()}` }, // ✅ FIXED
+    headers: { Authorization: `Bearer ${getToken()}` }, // FIXED
   });
 };
 
@@ -33,5 +33,20 @@ export const completeBooking = async (id) => {
     {
       headers: { Authorization: `Bearer ${getToken()}` }, 
     }
+  );
+};
+// Get all bookings for the logged-in pet owner (history)
+export const getBookingHistory = async () => {
+  return axios.get(`${API}/history`, {
+    headers: { Authorization: `Bearer ${getToken()}` },
+  });
+};
+
+// Cancel a booking
+export const cancelBooking = async (id) => {
+  return axios.put(
+    `${API}/${id}/cancel`,
+    {},
+    { headers: { Authorization: `Bearer ${getToken()}` } }
   );
 };
