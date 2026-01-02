@@ -1,3 +1,117 @@
+// import { createContext, useContext, useState, useEffect } from "react";
+// import {
+//   toggleFavorite,
+//   getFavorites,
+// } from "../../services/petowner/favoriteService";
+
+// const FavoritesContext = createContext(null);
+
+// export const FavoritesProvider = ({ children }) => {
+//   const [favorites, setFavorites] = useState([]);
+//   const [favoriteIds, setFavoriteIds] = useState(new Set());
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState(null);
+
+//   // Load all favorites on mount
+//   useEffect(() => {
+//     loadFavorites();
+//   }, []);
+
+//   // Load favorites from backend
+//   const loadFavorites = async () => {
+//     try {
+//       setLoading(true);
+//       setError(null);
+//       const response = await getFavorites();
+//       console.log("Loaded favorites:", response.favorites); // DEBUG
+//       setFavorites(response.favorites || []);
+      
+//       // Create a Set of favorite IDs for quick lookup
+//       const ids = new Set(response.favorites?.map((shelter) => shelter._id) || []);
+//       setFavoriteIds(ids);
+//     } catch (err) {
+//       setError(err.message);
+//       console.error("Error loading favorites:", err);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   // Toggle favorite status
+//   const handleToggleFavorite = async (shelterId) => {
+//     try {
+//       console.log("Toggling favorite for:", shelterId); // DEBUG
+//       const response = await toggleFavorite(shelterId);
+//       console.log("Toggle response:", response); // DEBUG
+      
+//       if (response.isFavorite) {
+//         // Added to favorites
+//         console.log("Adding to favorites"); // DEBUG
+//         setFavoriteIds((prev) => new Set([...prev, shelterId]));
+//       } else {
+//         // Removed from favorites - THIS IS THE CRITICAL PART
+//         console.log("Removing from favorites"); // DEBUG
+        
+//         // 1. Remove from favoriteIds Set
+//         setFavoriteIds((prev) => {
+//           const newSet = new Set(prev);
+//           newSet.delete(shelterId);
+//           return newSet;
+//         });
+        
+//         // 2. Remove from favorites array IMMEDIATELY (this makes it disappear)
+//         setFavorites((prev) => {
+//           const updated = prev.filter((shelter) => shelter._id !== shelterId);
+//           console.log("Updated favorites array:", updated); // DEBUG
+//           return updated;
+//         });
+//       }
+      
+//       return response;
+//     } catch (err) {
+//       setError(err.message);
+//       console.error("Error toggling favorite:", err);
+//       throw err;
+//     }
+//   };
+
+//   // Check if a shelter is favorited
+//   const isFavorite = (shelterId) => {
+//     return favoriteIds.has(shelterId);
+//   };
+
+//   // Get favorite count
+//   const getFavoriteCount = () => {
+//     return favoriteIds.size;
+//   };
+
+//   const value = {
+//     favorites,
+//     favoriteIds,
+//     loading,
+//     error,
+//     isFavorite,
+//     handleToggleFavorite,
+//     loadFavorites,
+//     getFavoriteCount,
+//   };
+
+//   return (
+//     <FavoritesContext.Provider value={value}>
+//       {children}
+//     </FavoritesContext.Provider>
+//   );
+// };
+
+// // Custom hook to use the favorites context
+// export const useFavorites = () => {
+//   const context = useContext(FavoritesContext);
+//   if (!context) {
+//     throw new Error("useFavorites must be used within FavoritesProvider");
+//   }
+//   return context;
+// };
+
 import { createContext, useContext, useState, useEffect } from "react";
 import {
   toggleFavorite,
@@ -12,9 +126,33 @@ export const FavoritesProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Load all favorites on mount
+  // Load favorites when user changes
   useEffect(() => {
-    loadFavorites();
+    const checkUserAndLoadFavorites = () => {
+      const storedUser = localStorage.getItem("user");
+      
+      if (storedUser) {
+        loadFavorites();
+      } else {
+        // Clear favorites if no user is logged in
+        setFavorites([]);
+        setFavoriteIds(new Set());
+      }
+    };
+
+    // Load on mount
+    checkUserAndLoadFavorites();
+
+    // Listen for storage changes (when user logs in/out in same tab)
+    window.addEventListener("storage", checkUserAndLoadFavorites);
+    
+    // Listen for custom user-change event (for same-tab login/logout)
+    window.addEventListener("userChanged", checkUserAndLoadFavorites);
+
+    return () => {
+      window.removeEventListener("storage", checkUserAndLoadFavorites);
+      window.removeEventListener("userChanged", checkUserAndLoadFavorites);
+    };
   }, []);
 
   // Load favorites from backend
@@ -23,7 +161,7 @@ export const FavoritesProvider = ({ children }) => {
       setLoading(true);
       setError(null);
       const response = await getFavorites();
-      console.log("Loaded favorites:", response.favorites); // DEBUG
+      console.log("Loaded favorites:", response.favorites);
       setFavorites(response.favorites || []);
       
       // Create a Set of favorite IDs for quick lookup
@@ -40,17 +178,17 @@ export const FavoritesProvider = ({ children }) => {
   // Toggle favorite status
   const handleToggleFavorite = async (shelterId) => {
     try {
-      console.log("Toggling favorite for:", shelterId); // DEBUG
+      console.log("Toggling favorite for:", shelterId);
       const response = await toggleFavorite(shelterId);
-      console.log("Toggle response:", response); // DEBUG
+      console.log("Toggle response:", response);
       
       if (response.isFavorite) {
         // Added to favorites
-        console.log("Adding to favorites"); // DEBUG
+        console.log("Adding to favorites");
         setFavoriteIds((prev) => new Set([...prev, shelterId]));
       } else {
-        // Removed from favorites - THIS IS THE CRITICAL PART
-        console.log("Removing from favorites"); // DEBUG
+        // Removed from favorites
+        console.log("Removing from favorites");
         
         // 1. Remove from favoriteIds Set
         setFavoriteIds((prev) => {
@@ -59,10 +197,10 @@ export const FavoritesProvider = ({ children }) => {
           return newSet;
         });
         
-        // 2. Remove from favorites array IMMEDIATELY (this makes it disappear)
+        // 2. Remove from favorites array IMMEDIATELY
         setFavorites((prev) => {
           const updated = prev.filter((shelter) => shelter._id !== shelterId);
-          console.log("Updated favorites array:", updated); // DEBUG
+          console.log("Updated favorites array:", updated);
           return updated;
         });
       }
@@ -111,4 +249,3 @@ export const useFavorites = () => {
   }
   return context;
 };
-

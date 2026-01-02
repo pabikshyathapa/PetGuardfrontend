@@ -34,10 +34,10 @@ export default function Header() {
       setUnreadCount(0);
       return;
     }
-    
+
     try {
       const notifications = await notificationService.getNotifications();
-      const unread = notifications.filter(n => !n.read).length;
+      const unread = notifications.filter((n) => !n.read).length;
       setUnreadCount(unread);
     } catch (err) {
       console.error("Failed to fetch unread count:", err);
@@ -47,10 +47,10 @@ export default function Header() {
   useEffect(() => {
     if (user) {
       fetchUnreadCount();
-      
+
       // Poll for new notifications every 30 seconds
       const interval = setInterval(fetchUnreadCount, 30000);
-      
+
       return () => clearInterval(interval);
     }
   }, [user]);
@@ -69,11 +69,32 @@ export default function Header() {
     }
   }, [location.pathname]);
 
+  // const handleLoginSuccess = (userData, token) => {
+  //   setAuthType(null);
+  //   setUser(userData);
+  //   localStorage.setItem("user", JSON.stringify(userData));
+  //   if (token) localStorage.setItem("token", token);
+
+  //   navigate(userData.role === "shelter" ? "/shelter-dashboard" : "/");
+  // };
+
+  // const handleLogout = () => {
+  //   localStorage.removeItem("user");
+  //   localStorage.removeItem("token");
+  //   setUser(null);
+  //   setActiveIcon("");
+  //   setUnreadCount(0);
+  //   navigate("/");
+  // };
+
   const handleLoginSuccess = (userData, token) => {
     setAuthType(null);
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
     if (token) localStorage.setItem("token", token);
+
+    // Dispatch custom event to notify FavoritesContext
+    window.dispatchEvent(new Event("userChanged"));
 
     navigate(userData.role === "shelter" ? "/shelter-dashboard" : "/");
   };
@@ -84,6 +105,10 @@ export default function Header() {
     setUser(null);
     setActiveIcon("");
     setUnreadCount(0);
+
+    // Dispatch custom event to notify FavoritesContext
+    window.dispatchEvent(new Event("userChanged"));
+
     navigate("/");
   };
 
@@ -174,7 +199,7 @@ export default function Header() {
               }`}
               onClick={handleBellClick}
             />
-            
+
             {/* Unread Badge */}
             {user && unreadCount > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-bold rounded-full h-4 w-4 flex items-center justify-center animate-pulse">
@@ -196,7 +221,7 @@ export default function Header() {
             {user ? (
               <>
                 <span
-                  className="text-[#183D8B] cursor-pointer hover:underline font-medium"
+                  className="cursor-pointer font-medium text-[#183D8B] hover:text-black hover:underline active:text-black focus:text-black"
                   onClick={() => handleIconClick("profile", "/profile")}
                 >
                   Hi, {user.name}

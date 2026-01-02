@@ -577,7 +577,7 @@ export default function ShelterBookings() {
     <ShelterLayout>
       <div className="max-w-6xl mx-auto p-4 lg:p-8">
         {/* Header Area */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
           <h2
             className="text-3xl font-black tracking-tight"
             style={{ color: "#183D8B" }}

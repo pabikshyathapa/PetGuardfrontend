@@ -892,7 +892,7 @@ export default function BookingPage() {
     );
   }
 
-  if (!user) return <p className="text-center p-10 font-medium">User not found. Please login.</p>;
+  if (!user) return <p className="text-center p-10 font-medium">Please login first for a fast and safe booking.</p>;
   if (!shelter) return <p className="text-center p-10 font-medium">Loading shelter details...</p>;
 
   return (
