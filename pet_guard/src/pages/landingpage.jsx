@@ -80,7 +80,7 @@ export default function LandingPage() {
           <div className="relative w-[370px]">
             <input
               type="text"
-              placeholder="Type preffered location..."
+              placeholder="Type location..."
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
               className="w-full px-5 py-3 pr-32 border shadow-md outline-none rounded-[20px]"

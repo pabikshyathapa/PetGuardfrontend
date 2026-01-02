@@ -42,7 +42,7 @@ export default function ShelterCard({ shelter }) {
       }
     } catch (error) {
       console.error("Error toggling favorite:", error);
-      toast.error("Failed to update favorites");
+      toast.error("Please login to add to favorites!");
     } finally {
       setIsTogglingFavorite(false);
     }

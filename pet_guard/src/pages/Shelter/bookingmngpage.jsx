@@ -454,7 +454,7 @@ const PaymentBadge = ({ payment, onMarkPaid }) => {
       {isPending && (
         <button
           onClick={onMarkPaid}
-          className="text-[11px] text-blue-600 hover:underline font-semibold"
+          className="text-[11px] bg-green-50 text-green-600 hover:underline font-semibold"
         >
           Mark as Paid
         </button>

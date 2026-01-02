@@ -1,6 +1,3 @@
-// src/context/FavoritesContext.jsx
-// CREATE THIS NEW FILE
-
 import { createContext, useContext, useState, useEffect } from "react";
 import {
   toggleFavorite,
@@ -114,3 +111,4 @@ export const useFavorites = () => {
   }
   return context;
 };
+
