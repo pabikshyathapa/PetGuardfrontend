@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import { searchShelters } from "../../services/Shelter/shelterService";
 import ShelterCard from "../../components/petowner/browseSheltercard";
 import Header from "../../layouts/Header";
+import Footer from "../../layouts/Footer";
 import { FaSearch, FaMapMarkerAlt, FaRegFrownOpen } from "react-icons/fa";
 
 export default function ShelterSearchResultPage() {
@@ -96,6 +97,7 @@ export default function ShelterSearchResultPage() {
           </div>
         )}
       </main>
+      <Footer />
     </div>
   );
 }

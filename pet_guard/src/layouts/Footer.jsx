@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Footer() {
   return (
-<footer className="text-black py-6 px-8 mt-0" style={{  backgroundColor: "#F3F1EE" }}>
+<footer className="text-black py-6 px-8 mt-0 bg-blue-50">
       <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
 
         <div>

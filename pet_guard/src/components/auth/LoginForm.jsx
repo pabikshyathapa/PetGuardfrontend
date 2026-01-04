@@ -34,7 +34,7 @@ const LoginForm = ({
             type="email"
             name="email"
             placeholder="Email"
-            className="p-3 rounded-lg bg-[#E6E6E6]"
+            className="p-3 rounded-lg bg-blue-100"
             value={form.email}
             onChange={handleChange}
             required
@@ -45,7 +45,7 @@ const LoginForm = ({
               type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Password"
-              className="p-3 rounded-lg bg-[#E6E6E6] w-full"
+              className="p-3 rounded-lg bg-blue-100 w-full"
               value={form.password}
               onChange={handleChange}
               onPaste={(e) => e.preventDefault()}
@@ -58,6 +58,12 @@ const LoginForm = ({
               {showPassword ? <FaEye size={20} /> : <FaEyeSlash size={20} />}
             </div>
           </div>
+          <p
+            className="text-sm text-blue-500 cursor-pointer text-right"
+            onClick={() => setStep("forgot")}
+          >
+            Forgot Password?
+          </p>
 
           <button className="bg-[#183D8B] text-white py-3 rounded-lg mt-3">
             Login

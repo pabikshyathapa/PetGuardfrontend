@@ -39,6 +39,7 @@ import { useEffect, useState } from "react";
 import { getAllShelters } from "../../services/petowner/browseService";
 import ShelterCard from "../../components/petowner/browseSheltercard";
 import Header from "../../layouts/Header";
+import Footer from "../../layouts/Footer";
 
 export default function BrowseShelters() {
   const [shelters, setShelters] = useState([]);
@@ -102,6 +103,7 @@ export default function BrowseShelters() {
           )}
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

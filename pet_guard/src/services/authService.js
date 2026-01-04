@@ -28,3 +28,11 @@ export const changePassword = (data, token) => {
     headers: { Authorization: `Bearer ${token}` },
   });
 };
+
+export const forgotPassword = (data) => {
+  return api.post("/forgot-password", data);
+};
+
+export const resetPassword = (data) => {
+  return api.post("/reset-password", data);
+};

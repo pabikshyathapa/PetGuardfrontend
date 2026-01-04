@@ -33,6 +33,7 @@ export default function ServicesSelector({ services = [], setData, editMode }) {
   const options = [
     { id: "Boarding", icon: <LuMoon size={16} /> },
     { id: "Daycare", icon: <LuSun size={18} /> },
+
   ];
 
   const toggle = (service) => {

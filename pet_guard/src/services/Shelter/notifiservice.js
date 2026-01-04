@@ -19,6 +19,14 @@ export const notificationService = {
   markAsRead: async (id) => {
     const response = await axios.put(`${API_URL}/${id}/read`, {}, getHeaders());
     return response.data;
+  },
+  markAllAsRead: async () => {
+    const response = await axios.put(
+      `${API_URL}/read-all`,
+      {},
+      getHeaders()
+    );
+    return response.data;
   }
 };
 

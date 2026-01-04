@@ -72,7 +72,7 @@ export default function FileUploader({
 
       {/* Verification Documents Section */}
       <div>
-        <label className="block text-sm font-medium mb-2 text-gray-700 font-semibold">Verification documents (Business Registration, PAN Card).</label>
+        <label className="block text-sm font-medium mb-2 text-gray-700 font-semibold">Verification documents (Comapany Registration, PAN Card).</label>
         <div className="relative">
           {/* Small Upload Trigger with Navy Blue Icon */}
           <label className="flex flex-col items-center justify-center w-full h-24 bg-white border border-gray-200 rounded-xl shadow-sm cursor-pointer hover:bg-gray-50 transition-all">

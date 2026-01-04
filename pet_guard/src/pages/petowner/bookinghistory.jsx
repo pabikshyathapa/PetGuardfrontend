@@ -45,7 +45,9 @@
 // }
 
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
+  ArrowLeft,
   Calendar,
   LayoutGrid,
   History,
@@ -59,12 +61,14 @@ import {
   ArrowRight,
 } from "lucide-react";
 
+import Header from "../../layouts/Header";
 import {
   getBookingHistory,
   cancelBooking,
 } from "../../services/Shelter/shelterbooking";
 
 export default function BookingHistory() {
+  const navigate = useNavigate();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -132,173 +136,182 @@ export default function BookingHistory() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F3F1EE] py-12 px-4 sm:px-6">
-      <div className="max-w-5xl mx-auto">
-        
-        {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
-          <div className="flex items-center gap-5">
-            <div className="bg-[#183D8B] p-4 rounded-2xl shadow-lg shadow-blue-900/20">
-              <History className="text-white" size={28} />
+    <div className="min-h-screen bg-gray-100">
+      {/* 1. Added Global Header */}
+      <Header />
+
+      <div className="py-20 px-4 sm:px-6">
+        <div className="max-w-5xl mx-auto">
+          
+          <button 
+            onClick={() => navigate(-1)} 
+            className="flex items-center gap-2 text-slate-500 hover:text-[#183D8B] font-bold mb-8 transition-colors group"
+          >
+            <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+            <span>Back</span>
+          </button>
+
+          {/* Header Content Section */}
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+            <div className="flex items-center gap-5">
+              <div className="bg-[#183D8B] p-4 rounded-2xl shadow-lg shadow-blue-900/20">
+                <History className="text-white" size={28} />
+              </div>
+              <div>
+                <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+                  Booking History
+                </h2>
+                <p className="text-slate-500 font-medium">
+                  You have <span className="text-[#183D8B]">{filteredBookings.length}</span> total records
+                </p>
+              </div>
             </div>
-            <div>
-              <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-                Booking History
-              </h2>
-              <p className="text-slate-500 font-medium">
-                You have <span className="text-[#183D8B]">{filteredBookings.length}</span> total records
-              </p>
+
+            {/* Filter Pills */}
+            <div className="flex flex-wrap gap-2 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm">
+              {["all", "30", "45", "custom"].map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${
+                    filter === f
+                      ? "bg-[#183D8B] text-white shadow-md"
+                      : "text-slate-600 hover:bg-slate-50"
+                  }`}
+                >
+                  {f === "all" ? "All Time" : f === "custom" ? "Custom Range" : `Last ${f} Days`}
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Filter Pills */}
-          <div className="flex flex-wrap gap-2 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm">
-            {["all", "30", "45", "custom"].map((f) => (
-              <button
-                key={f}
-                onClick={() => setFilter(f)}
-                className={`px-5 py-2 rounded-xl text-sm font-bold transition-all ${
-                  filter === f
-                    ? "bg-[#183D8B] text-white shadow-md"
-                    : "text-slate-600 hover:bg-slate-50"
-                }`}
-              >
-                {f === "all" ? "All Time" : f === "custom" ? "Custom Range" : `Last ${f} Days`}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        {/* Custom Date Picker (Thicker) */}
-        {filter === "custom" && (
-          <div className="bg-white border-2 border-[#183D8B]/10 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row gap-4 items-center animate-in fade-in slide-in-from-top-2">
-            <div className="flex-1 w-full">
-              <label className="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">From Date</label>
-              <input
-                type="date"
-                value={fromDate}
-                onChange={(e) => setFromDate(e.target.value)}
-                className="w-full border-2 border-slate-100 rounded-xl px-4 py-3 focus:border-[#183D8B] outline-none transition-colors"
-              />
+          {/* Custom Date Picker */}
+          {filter === "custom" && (
+            <div className="bg-white border-2 border-[#183D8B]/10 rounded-2xl p-6 mb-8 flex flex-col sm:flex-row gap-4 items-center animate-in fade-in slide-in-from-top-2">
+              <div className="flex-1 w-full">
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">From Date</label>
+                <input
+                  type="date"
+                  value={fromDate}
+                  onChange={(e) => setFromDate(e.target.value)}
+                  className="w-full border-2 border-slate-100 rounded-xl px-4 py-3 focus:border-[#183D8B] outline-none transition-colors"
+                />
+              </div>
+              <ArrowRight className="hidden sm:block text-slate-300 mt-6" />
+              <div className="flex-1 w-full">
+                <label className="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">To Date</label>
+                <input
+                  type="date"
+                  value={toDate}
+                  onChange={(e) => setToDate(e.target.value)}
+                  className="w-full border-2 border-slate-100 rounded-xl px-4 py-3 focus:border-[#183D8B] outline-none transition-colors"
+                />
+              </div>
             </div>
-            <ArrowRight className="hidden sm:block text-slate-300 mt-6" />
-            <div className="flex-1 w-full">
-              <label className="block text-xs font-bold text-slate-500 uppercase mb-2 ml-1">To Date</label>
-              <input
-                type="date"
-                value={toDate}
-                onChange={(e) => setToDate(e.target.value)}
-                className="w-full border-2 border-slate-100 rounded-xl px-4 py-3 focus:border-[#183D8B] outline-none transition-colors"
-              />
-            </div>
-          </div>
-        )}
+          )}
 
-        {/* Booking Cards */}
-        {filteredBookings.length ? (
-          <div className="space-y-6">
-            {filteredBookings.map((b) => (
-              <div
-                key={b._id}
-                className="group bg-white border border-slate-200 rounded-3xl overflow-hidden hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300"
-              >
-                <div className="p-1 px-6 bg-slate-50/50 border-b border-slate-100 flex justify-between items-center">
-                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-loose">
-                     Transaction Ref: {b.payment?.transactionId || "N/A"}
-                   </span>
-                </div>
-                
-                <div className="p-8">
-                  <div className="flex flex-col lg:flex-row justify-between gap-10">
-                    
-                    <div className="flex-1">
-                      {/* Header Info */}
-                      <div className="flex flex-wrap items-center gap-4 mb-8">
-                        <h3 className="text-2xl font-black text-slate-900">
-                          {b.shelter?.name}
-                        </h3>
-                        <span className={`px-4 py-1.5 rounded-full border-2 text-[11px] font-black uppercase tracking-wider ${getStatusStyles(b.bookingStatus)}`}>
-                          {b.bookingStatus}
-                        </span>
-                        <div className="flex items-center gap-2 bg-slate-100 px-4 py-1.5 rounded-full text-slate-700 font-bold text-sm">
-                          <PawPrint size={16} className="text-[#183D8B]" />
-                          {b.petCount} Pet{b.petCount > 1 && "s"}
+          {/* Booking Cards */}
+          {filteredBookings.length ? (
+            <div className="space-y-6">
+              {filteredBookings.map((b) => (
+                <div
+                  key={b._id}
+                  className="group bg-white border border-slate-200 rounded-3xl overflow-hidden hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-300"
+                >
+                  <div className="p-1 px-6 bg-slate-50/50 border-b border-slate-100 flex justify-between items-center">
+                     <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-loose">
+                       Transaction Ref: {b.payment?.transactionId || "N/A"}
+                     </span>
+                  </div>
+                  
+                  <div className="p-8">
+                    <div className="flex flex-col lg:flex-row justify-between gap-10">
+                      <div className="flex-1">
+                        <div className="flex flex-wrap items-center gap-4 mb-8">
+                          <h3 className="text-2xl font-black text-slate-900">
+                            {b.shelter?.name}
+                          </h3>
+                          <span className={`px-4 py-1.5 rounded-full border-2 text-[11px] font-black uppercase tracking-wider ${getStatusStyles(b.bookingStatus)}`}>
+                            {b.bookingStatus}
+                          </span>
+                          <div className="flex items-center gap-2 bg-slate-100 px-4 py-1.5 rounded-full text-slate-700 font-bold text-sm">
+                            <PawPrint size={16} className="text-[#183D8B]" />
+                            {b.petCount} Pet{b.petCount > 1 && "s"}
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-4">
+                          <Info icon={<Calendar size={18}/>} label="Stay Duration">
+                            <span className="font-bold text-slate-800">
+                              {new Date(b.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
+                            </span>
+                            <span className="mx-2 text-slate-300">—</span>
+                            <span className="font-bold text-slate-800">
+                              {new Date(b.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                            </span>
+                          </Info>
+
+                          <Info icon={<Wallet size={18}/>} label="Payment Details">
+                            <span className="capitalize font-bold text-slate-800">{b.payment?.method}</span>
+                            <span className="ml-2 text-xs font-medium text-slate-400">({b.payment?.status})</span>
+                          </Info>
+
+                          <Info icon={<Clock size={18}/>} label="Booking Date">
+                            <span className="font-medium text-slate-700">{new Date(b.createdAt).toLocaleString()}</span>
+                          </Info>
+
+                          <Info icon={<LayoutGrid size={18}/>} label="Service Provided">
+                            <span className="font-bold uppercase text-slate-800">{b.serviceType}</span>
+                          </Info>
                         </div>
                       </div>
 
-                      {/* Info Grid */}
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-8 gap-x-4">
-                        <Info icon={<Calendar size={18}/>} label="Stay Duration">
-                          <span className="font-bold text-slate-800">
-                            {new Date(b.startDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
-                          </span>
-                          <span className="mx-2 text-slate-300">—</span>
-                          <span className="font-bold text-slate-800">
-                            {new Date(b.endDate).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
-                          </span>
-                        </Info>
+                      <div className="lg:w-64 flex flex-col items-center lg:items-end justify-between border-t lg:border-t-0 lg:border-l border-slate-100 pt-8 lg:pt-0 lg:pl-10">
+                        <div className="text-center lg:text-right">
+                          <p className="text-xs font-semi-bold text-slate-400 uppercase tracking-widest mb-1">
+                            Grand Total
+                          </p>
+                          <p className="text-xl font-black text-[#183D8B]">
+                            NPR {b.totalAmount.toLocaleString()}
+                          </p>
+                        </div>
 
-                        <Info icon={<Wallet size={18}/>} label="Payment Details">
-                          <span className="capitalize font-bold text-slate-800">{b.payment?.method}</span>
-                          <span className="ml-2 text-xs font-medium text-slate-400">({b.payment?.status})</span>
-                        </Info>
+                        <div className="w-full mt-8">
+                          {b.bookingStatus === "confirmed" && (
+                            <button
+                              onClick={() => handleCancel(b._id)}
+                              className="w-full flex items-center justify-center gap-2 bg-white border-2 border-slate-200 text-slate-600 font-bold py-3 px-6 rounded-2xl hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-all active:scale-95"
+                            >
+                              <Trash2 size={18} />
+                              Cancel
+                            </button>
+                          )}
 
-                        <Info icon={<Clock size={18}/>} label="Booking Date">
-                          <span className="font-medium text-slate-700">{new Date(b.createdAt).toLocaleString()}</span>
-                        </Info>
-
-                        <Info icon={<LayoutGrid size={18}/>} label="Service Provided">
-                          <span className="font-bold uppercase text-slate-800">{b.serviceType}</span>
-                        </Info>
-                      </div>
-                    </div>
-
-                    {/* Pricing & Actions Section */}
-                    <div className="lg:w-64 flex flex-col items-center lg:items-end justify-between border-t lg:border-t-0 lg:border-l border-slate-100 pt-8 lg:pt-0 lg:pl-10">
-                      <div className="text-center lg:text-right">
-                        <p className="text-xs font-semi-bold text-slate-400 uppercase tracking-widest mb-1">
-                          Grand Total
-                        </p>
-                        <p className="text-xl font-black text-[#183D8B]">
-                          NPR {b.totalAmount.toLocaleString()}
-                        </p>
-                      </div>
-
-                      <div className="w-full mt-8">
-                        {b.bookingStatus === "confirmed" && (
-                          <button
-                            onClick={() => handleCancel(b._id)}
-                            className="w-full flex items-center justify-center gap-2 bg-white border-2 border-slate-200 text-slate-600 font-bold py-3 px-6 rounded-2xl hover:bg-red-50 hover:border-red-200 hover:text-red-600 transition-all active:scale-95"
-                          >
-                            <Trash2 size={18} />
-                            Cancel
-                          </button>
-                        )}
-
-                        {b.bookingStatus === "completed" && (
-                          <div className="w-full flex items-center justify-center gap-2 bg-slate-50 text-slate-500 font-bold py-3 px-6 rounded-2xl border-2 border-transparent">
-                            <CheckCircle2 size={18} className="text-emerald-500" />
-                            Completed
-                          </div>
-                        )}
+                          {b.bookingStatus === "completed" && (
+                            <div className="w-full flex items-center justify-center gap-2 bg-slate-50 text-slate-500 font-bold py-3 px-6 rounded-2xl border-2 border-transparent">
+                              <CheckCircle2 size={18} className="text-emerald-500" />
+                              Completed
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="bg-white border-4 border-dashed border-slate-100 rounded-[40px] p-20 text-center">
-            <div className="bg-slate-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-              <PawPrint size={40} className="text-slate-300" />
+              ))}
             </div>
-            <h3 className="text-xl font-bold text-slate-900 mb-2">No Bookings Found</h3>
-            <p className="text-slate-500 max-w-xs mx-auto font-medium">
-              We couldn't find any booking records for the selected period.
-            </p>
-          </div>
-        )}
+          ) : (
+            <div className="bg-white border-4 border-dashed border-slate-100 rounded-[40px] p-20 text-center">
+              <div className="bg-slate-50 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
+                <PawPrint size={40} className="text-slate-300" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-900 mb-2">No Bookings Found</h3>
+              <p className="text-slate-500 max-w-xs mx-auto font-medium">
+                We couldn't find any booking records for the selected period.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

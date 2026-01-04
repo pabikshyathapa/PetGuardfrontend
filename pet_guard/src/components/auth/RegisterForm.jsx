@@ -51,7 +51,7 @@ const RegisterForm = ({
             type="text"
             name="name"
             placeholder="Full Name"
-            className="p-3 rounded-lg bg-[#E6E6E6]"
+            className="p-3 rounded-lg bg-blue-100"
             value={form.name}
             onChange={handleChange}
             required
@@ -61,7 +61,7 @@ const RegisterForm = ({
             type="email"
             name="email"
             placeholder="Email"
-            className="p-3 rounded-lg bg-[#E6E6E6]"
+            className="p-3 rounded-lg bg-blue-100"
             value={form.email}
             onChange={handleChange}
             required
@@ -71,7 +71,7 @@ const RegisterForm = ({
             type="text"
             name="phone"
             placeholder="Phone"
-            className="p-3 rounded-lg bg-[#E6E6E6]"
+            className="p-3 rounded-lg bg-blue-100"
             value={form.phone}
             onChange={handlePhoneChange}
           />
@@ -82,7 +82,7 @@ const RegisterForm = ({
               type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Create Password"
-              className="p-3 rounded-lg bg-[#E6E6E6] w-full pr-10" // added padding-right for icon
+              className="p-3 rounded-lg bg-blue w-full pr-10" 
               value={form.password}
               onChange={handleChange}
               required

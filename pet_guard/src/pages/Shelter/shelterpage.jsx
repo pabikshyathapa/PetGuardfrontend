@@ -644,27 +644,27 @@ export default function ShelterDashboard() {
                         toast.warn("Please enter numbers only", { autoClose: 1000 });
                       }
                     }}
-                    className={`w-full bg-gray-100 border-gray-200 rounded-xl py-3.5 focus:ring-2 focus:ring-blue-500 outline-none transition-all ${editMode ? 'pl-8' : 'pl-0 bg-transparent border-transparent text-3xl font-black text-[#183D8B]'}`}
+                    className={`w-full bg-gray-100 border-gray-200 rounded-xl py-3.5 focus:ring-2 focus:ring-blue-500 outline-none transition-all ${editMode ? 'pl-8' : 'pl-0 bg-transparent border-transparent text-3xl font-black text-gray-600'}`}
                     placeholder="0"
                   />
                 </div>
               </div>
 
               <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col justify-center">
-                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">Shelter Status</label>
+                <label className="block text-xs font-bold text-gray-400 uppercase tracking-widest">Shelter Status</label>
                 <StatusSelector editMode={editMode} status={data.status} setData={setData} />
               </div>
             </div>
 
             {/* Services Card */}
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-              <h3 className="text-lg font-bold text-gray-800 mb-6 border-b pb-2">Available Services</h3>
+              <h3 className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 border-b pb-2">Available Services</h3>
               <ServicesSelector editMode={editMode} services={data.services || []} setData={setData} />
             </div>
 
             {/* Files & Media Card */}
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100">
-              <h3 className="text-lg font-bold text-gray-800 mb-6 border-b pb-2">Media & Verification</h3>
+              <h3 className="text-lg font-bold text-gray-500 mb-6 border-b pb-2">Media & Documents</h3>
               <FileUploader
                 editMode={editMode}
                 photos={photos}
@@ -707,7 +707,7 @@ export default function ShelterDashboard() {
                             rel="noopener noreferrer"
                             className="flex items-center p-3 bg-gray-100 border border-gray-200 rounded-xl hover:bg-blue-50 hover:border-blue-200 transition-colors"
                           >
-                            <span className="text-blue-600 mr-2">{isImg ? "🖼️" : "📄"}</span>
+                            <span className="text-blue-600 mr-2">{isImg ? "📄" : "📄"}</span>
                             <span className="text-sm font-medium text-gray-700 truncate">{doc}</span>
                           </a>
                         );

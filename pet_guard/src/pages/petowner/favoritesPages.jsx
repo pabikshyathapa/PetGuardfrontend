@@ -4,6 +4,7 @@ import ShelterCard from "../../components/petowner/browseSheltercard";
 import { FaHeart, FaSpinner } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Header from "../../layouts/Header";
+import Footer from "../../layouts/Footer";
 
 export default function FavoritesPage() {
   const navigate = useNavigate();
@@ -123,6 +124,7 @@ export default function FavoritesPage() {
           )}
         </div>
       </div>
+      <Footer />
     </>
   );
 }

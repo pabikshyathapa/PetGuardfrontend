@@ -4,7 +4,6 @@ import {
   BellIcon,
   Cog6ToothIcon,
   ArrowRightStartOnRectangleIcon,
-  ClipboardDocumentListIcon,
   CalendarIcon
 } from "@heroicons/react/24/outline";
 import { NavLink, useNavigate } from "react-router-dom";
