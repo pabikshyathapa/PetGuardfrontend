@@ -18,17 +18,20 @@ const RegisterForm = ({
   };
 
   const handlePhoneChange = (e) => {
-    const { value } = e.target;
-    const onlyNums = value.replace(/[^0-9]/g, "");
+    let value = e.target.value.replace(/[^0-9]/g, "");
 
-    const mockEvent = {
-      target: {
-        name: "phone",
-        value: onlyNums,
-      },
-    };
-    handleChange(mockEvent);
-  };
+  // limit to 10 digits
+  if (value.length > 10) {
+    value = value.slice(0, 10);
+  }
+
+  handleChange({
+    target: {
+      name: "phone",
+      value,
+    },
+  });
+};
   return (
     <div className="flex w-full">
       {/* Left Image */}
@@ -68,13 +71,16 @@ const RegisterForm = ({
           />
 
           <input
-            type="text"
-            name="phone"
-            placeholder="Phone"
-            className="p-3 rounded-lg bg-blue-100"
-            value={form.phone}
-            onChange={handlePhoneChange}
-          />
+  type="text"
+  name="phone"
+  placeholder="+977"
+  className="p-3 rounded-lg bg-blue-100"
+  value={form.phone}
+  onChange={handlePhoneChange}
+  pattern="\d{10}"
+  maxLength={10}
+  required
+/>
 
           {/* Password Input with Eye Icon */}
           <div className="relative w-full">
@@ -82,7 +88,7 @@ const RegisterForm = ({
               type={showPassword ? "text" : "password"}
               name="password"
               placeholder="Create Password"
-              className="p-3 rounded-lg bg-blue w-full pr-10" 
+              className="p-3 rounded-lg bg-blue-100 w-full pr-10" 
               value={form.password}
               onChange={handleChange}
               required

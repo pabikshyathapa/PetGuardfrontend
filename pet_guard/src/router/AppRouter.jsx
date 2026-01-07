@@ -18,6 +18,9 @@ import PaymentSuccess from '../pages/paymentSuccess';
 import PaymentFailed from '../pages/paymentfaliure';
 import ShelterBookings from '../pages/Shelter/bookingmngpage';
 import BookingHistory from '../pages/petowner/bookinghistory';
+import Dashboard from '../pages/Shelter/shelterdashboard';
+import AboutUs from '../pages/aboutus';
+
 
 
 export default function AppRouter() {
@@ -42,6 +45,10 @@ export default function AppRouter() {
         <Route path="/payment-failed" element={<PaymentFailed />} />
         <Route path="/shelter/bookings" element={<ShelterBookings />} />
         <Route path="/bookinghistory" element={<BookingHistory />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/aboutuspage" element={<AboutUs />} />
+
+        
 
 
 

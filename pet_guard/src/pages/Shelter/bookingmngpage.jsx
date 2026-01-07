@@ -746,6 +746,30 @@ export default function ShelterBookings() {
                           {new Date(b.endDate).toDateString()}
                         </p>
                       </div>
+                      {/* ✅ ADDED: ASSIGNED ROOMS */}
+                      {b.roomAssignments?.length > 0 && (
+                        <div className="sm:col-span-2">
+                          <span className="text-[10px] font-bold uppercase text-gray-400 block">
+                            Assigned Rooms
+                          </span>
+                          <div className="flex flex-wrap gap-2 mt-1">
+                            {[
+                              ...new Set(
+                                b.roomAssignments.map((r) => r.roomNumber)
+                              ),
+                            ].map((room) => (
+                              <span
+                                key={room}
+                                className="px-3 py-1 rounded-full text-xs font-bold 
+                                       bg-blue-100 text-[#183D8B] 
+                                       border border-blue-200"
+                              >
+                                Room {room}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
@@ -756,7 +780,10 @@ export default function ShelterBookings() {
                         <span className="font-bold text-gray-400 uppercase text-[10px] block">
                           Total Amount
                         </span>
-                        <p className="text-2xl font-black leading-tight" style={{ color: '#183D8B'}}>
+                        <p
+                          className="text-2xl font-black leading-tight"
+                          style={{ color: "#183D8B" }}
+                        >
                           Rs {b.totalAmount}
                         </p>
                         <p className="text-[11px] font-bold text-gray-400 uppercase tracking-tighter">

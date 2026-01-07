@@ -3,8 +3,8 @@
 // import { Swiper, SwiperSlide } from "swiper/react";
 // import { Navigation, Pagination, Thumbs, EffectCoverflow } from "swiper";
 // import { MapPin, Phone, Info } from "lucide-react";
-// import { FaHeart } from "react-icons/fa"; 
-// import { useFavorites } from "../../components/petowner/favoritescontext"; 
+// import { FaHeart } from "react-icons/fa";
+// import { useFavorites } from "../../components/petowner/favoritescontext";
 // import { toast } from "react-toastify";
 // import { useNavigate } from "react-router-dom";
 // import "swiper/css";
@@ -148,7 +148,7 @@
 //                   aria-label="Toggle Favorite"
 //                 >
 //                   <FaHeart
-//                     size={30} // Increased size
+//                     size={30}
 //                     className={`transition-all duration-300 ${
 //                       isFavorited
 //                         ? "text-red-500 fill-red-500 scale-110"
@@ -219,20 +219,25 @@
 //             )}
 //           </div>
 
-//           {/* Right Side: About & Ratings */}
-//           <div className="space-y-8 mt-0 md:mt-[-8px]">
-//             <div className="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.09)] border border-gray-100">
+//           {/* Right Side: About & Ratings - FIXED LAYOUT */}
+//           <div className="flex flex-col gap-8 mt-0 md:mt-[-8px]">
+//             {/* About Us - Extended Height to Match Images */}
+//             <div className="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.09)] border border-gray-100 h-[585px] flex flex-col">
 //               <div className="flex items-center gap-3 mb-4">
 //                 <Info size={28} className="text-[#183D8B]" />
 //                 <h2 className="text-2xl font-bold text-[#183D8B] uppercase tracking-tighter">
 //                   About Us
 //                 </h2>
 //               </div>
-//               <p className="text-black leading-relaxed text-left">
-//                 {shelter.description}
-//               </p>
+//               <div className="overflow-y-auto flex-1 pr-2">
+//                 <p className="text-black leading-relaxed text-left">
+//                   {shelter.description}
+//                 </p>
+//               </div>
 //             </div>
-//             <div>
+
+//             {/* Ratings & Reviews - Starts After About Us */}
+//             <div className="flex-1">
 //               <h2 className="text-2xl font-bold text-[#183D8B] mb-4 uppercase tracking-tight">
 //                 Ratings & Reviews
 //               </h2>
@@ -242,34 +247,33 @@
 //         </div>
 
 //         <div className="fixed bottom-8 left-0 right-0 z-50 px-4 pointer-events-none flex justify-center">
-//   <button 
-//     disabled={shelter.status?.toUpperCase() === "UNAVAILABLE"}
-//     onClick={() => navigate(`/booking/${shelter._id}`, { state: { shelter } })}
-//     className={`pointer-events-auto text-lg font-bold px-12 py-3 
-//       rounded-lg 
-//       shadow-lg transition-all transform flex items-center justify-center gap-3 uppercase tracking-wider
-//       ${shelter.status?.toUpperCase() === "UNAVAILABLE" 
-//         ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none border border-gray-400" 
-//         : "bg-[#183D8B] hover:bg-[#122e6b] text-white hover:-translate-y-1 active:scale-95 shadow-[0_10px_25px_rgba(24,61,139,0.3)]"
-//       }`}
-//   >
-//     {shelter.status?.toUpperCase() === "UNAVAILABLE" ? "NOT BOOKABLE" : "BOOK NOW"}
-//   </button>
-// </div>
+//           <button
+//             disabled={shelter.status?.toUpperCase() === "UNAVAILABLE"}
+//             onClick={() => navigate(`/booking/${shelter._id}`, { state: { shelter } })}
+//             className={`pointer-events-auto text-lg font-bold px-12 py-3
+//               rounded-lg
+//               shadow-lg transition-all transform flex items-center justify-center gap-3 uppercase tracking-wider
+//               ${shelter.status?.toUpperCase() === "UNAVAILABLE"
+//                 ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none border border-gray-400"
+//                 : "bg-[#183D8B] hover:bg-[#122e6b] text-white hover:-translate-y-1 active:scale-95 shadow-[0_10px_25px_rgba(24,61,139,0.3)]"
+//               }`}
+//           >
+//             {shelter.status?.toUpperCase() === "UNAVAILABLE" ? "NOT BOOKABLE" : "BOOK NOW"}
+//           </button>
+//         </div>
 //       </div>
 //     </div>
 //   );
 // }
 
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Thumbs, EffectCoverflow } from "swiper";
-import { MapPin, Phone, Info } from "lucide-react";
-import { FaHeart } from "react-icons/fa"; 
-import { useFavorites } from "../../components/petowner/favoritescontext"; 
+import { MapPin, Phone, Info, DoorOpen, CheckCircle } from "lucide-react";
+import { FaHeart } from "react-icons/fa";
+import { useFavorites } from "../../components/petowner/favoritescontext";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -284,10 +288,11 @@ import ShelterReviews from "../../components/petowner/ratingreviewcomponent";
 
 export default function ShelterDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [shelter, setShelter] = useState(null);
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const navigate = useNavigate();
-  // Favorite Logic Hooks
+  const [selectedRooms, setSelectedRooms] = useState([]);
+
   const { isFavorite, handleToggleFavorite } = useFavorites();
   const [isTogglingFavorite, setIsTogglingFavorite] = useState(false);
 
@@ -295,7 +300,6 @@ export default function ShelterDetails() {
     getShelterById(id).then(setShelter);
   }, [id]);
 
-  // Handle favorite toggle
   const onToggleFavorite = async () => {
     if (isTogglingFavorite) return;
 
@@ -316,7 +320,30 @@ export default function ShelterDetails() {
     }
   };
 
-  if (!shelter)
+  const handleRoomSelection = (roomNumber) => {
+    setSelectedRooms((prev) => {
+      if (prev.includes(roomNumber)) {
+        return prev.filter((r) => r !== roomNumber);
+      } else {
+        return [...prev, roomNumber];
+      }
+    });
+  };
+
+  const handleBookNow = () => {
+    if (selectedRooms.length === 0) {
+      toast.warn("Please select at least one room");
+      return;
+    }
+    navigate(`/booking/${shelter._id}`, {
+      state: {
+        shelter,
+        selectedRooms,
+      },
+    });
+  };
+
+  if (!shelter) {
     return (
       <div className="h-screen flex items-center justify-center bg-white">
         <p className="text-xl font-bold text-[#183D8B] animate-pulse">
@@ -324,8 +351,12 @@ export default function ShelterDetails() {
         </p>
       </div>
     );
+  }
 
   const isFavorited = isFavorite(shelter._id);
+  const availableRooms =
+    shelter.rooms?.filter((r) => r.status === "available") || [];
+  const bookedRooms = shelter.rooms?.filter((r) => r.status === "booked") || [];
 
   return (
     <div className="bg-white-100 min-h-screen pb-20">
@@ -361,7 +392,6 @@ export default function ShelterDetails() {
               ))}
             </Swiper>
 
-            {/* Thumbnails */}
             {shelter.photos.length > 1 && (
               <Swiper
                 onSwiper={setThumbsSwiper}
@@ -382,8 +412,6 @@ export default function ShelterDetails() {
                 ))}
               </Swiper>
             )}
-
-            {/* Shelter Info Header & Favorite Button */}
             <div className="mt-6 space-y-4">
               <div className="flex justify-between items-start">
                 <div className="flex flex-col">
@@ -403,11 +431,10 @@ export default function ShelterDetails() {
                   </div>
                 </div>
 
-                {/* Favorite Button  */}
                 <button
                   onClick={onToggleFavorite}
                   disabled={isTogglingFavorite}
-                  className="p-2.5 bg-white rounded-full  shadow-lg border border-gray-100 hover:shadow-xl hover:bg-gray-50 transition-all active:scale-90 disabled:opacity-50"
+                  className="p-2.5 bg-white rounded-full shadow-lg border border-gray-100 hover:shadow-xl hover:bg-gray-50 transition-all active:scale-90 disabled:opacity-50"
                   aria-label="Toggle Favorite"
                 >
                   <FaHeart
@@ -430,20 +457,17 @@ export default function ShelterDetails() {
                   <Phone size={18} className="text-[#183D8B]" />
                   {shelter.contact}
                 </p>
-                {/* Services Offered */}
+
                 {shelter.services && shelter.services.length > 0 && (
                   <div className="mt-6">
                     <h3 className="text-lg font-bold text-[#183D8B] mb-3 uppercase tracking-wide">
                       Services Offered
                     </h3>
-
                     <div className="flex flex-wrap gap-3">
                       {shelter.services.map((service, index) => (
                         <span
                           key={index}
-                          className="px-4 py-2 rounded-full text-sm font-semibold
-                     bg-blue-100 text-[#183D8B]
-                     border border-blue-200 shadow-sm"
+                          className="px-4 py-2 rounded-full text-sm font-semibold bg-blue-100 text-[#183D8B] border border-blue-200 shadow-sm"
                         >
                           {service}
                         </span>
@@ -452,6 +476,7 @@ export default function ShelterDetails() {
                   </div>
                 )}
               </div>
+
               <div className="inline-block bg-[#183D8B] px-6 py-3 rounded-2xl shadow-md transform hover:-rotate-1 transition-transform">
                 <p className="text-white text-sm font-medium opacity-80 uppercase tracking-wider">
                   Price per day
@@ -460,31 +485,128 @@ export default function ShelterDetails() {
                   Rs {shelter.pricePerDay}
                 </p>
               </div>
-            </div>
-
-            {/* Documents */}
-            {shelter.documents?.length > 0 && (
-              <div className="mt-10">
-                <h2 className="text-xl font-bold text-[#183D8B] mb-4 flex items-center gap-2 uppercase tracking-wide">
-                  Related Documents
-                </h2>
-                <div className="grid grid-cols-2 gap-4">
-                  {shelter.documents.map((doc) => (
-                    <img
-                      key={doc}
-                      src={`${IMAGE_URL}/${doc}`}
-                      alt="Document"
-                      className="w-full h-40 object-cover rounded-2xl border border-white shadow-sm hover:shadow-md transition-shadow"
-                    />
-                  ))}
+              {shelter.documents?.length > 0 && (
+                <div className="mt-10">
+                  <h2 className="text-xl font-bold text-[#183D8B] mb-4 flex items-center gap-2 uppercase tracking-wide">
+                    Related Documents
+                  </h2>
+                  <div className="grid grid-cols-2 gap-4">
+                    {shelter.documents.map((doc) => (
+                      <img
+                        key={doc}
+                        src={`${IMAGE_URL}/${doc}`}
+                        alt="Document"
+                        className="w-full h-40 object-cover rounded-2xl border border-white shadow-sm hover:shadow-md transition-shadow"
+                      />
+                    ))}
+                  </div>
                 </div>
+              )}
+            </div>
+            {/* ROOM SELECTION SECTION */}
+            {shelter.rooms && shelter.rooms.length > 0 && (
+              <div className="mt-10 bg-white p-6 rounded-3xl shadow-lg border border-gray-100">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-2xl font-bold text-[#183D8B] flex items-center gap-2">
+                    <DoorOpen size={24} />
+                    Available Rooms
+                  </h3>
+                  <div className="text-sm">
+                    <span className="font-bold text-green-600">
+                      {availableRooms.length} Available
+                    </span>
+                    <span className="mx-2 text-gray-300">|</span>
+                    <span className="font-bold text-orange-600">
+                      {bookedRooms.length} Booked
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+                  {shelter.rooms.map((room) => {
+                    const isSelected = selectedRooms.includes(room.roomNumber);
+                    const isBooked = room.status === "booked";
+
+                    return (
+                      <button
+                        key={room.roomNumber}
+                        onClick={() =>
+                          !isBooked && handleRoomSelection(room.roomNumber)
+                        }
+                        disabled={isBooked}
+                        className={`relative p-4 rounded-2xl border-2 transition-all ${
+                          isBooked
+                            ? "bg-orange-50 border-orange-200 cursor-not-allowed opacity-75"
+                            : isSelected
+                            ? "bg-[#183D8B] border-blue-600 text-white shadow-lg scale-105"
+                            : "bg-white border-gray-200 hover:border-blue-400 hover:shadow-md"
+                        }`}
+                      >
+                        <div className="flex flex-col items-center gap-2">
+                          <span
+                            className={`text-2xl font-black ${
+                              isBooked
+                                ? "text-orange-600"
+                                : isSelected
+                                ? "text-white"
+                                : "text-gray-700"
+                            }`}
+                          >
+                            {room.roomNumber}
+                          </span>
+
+                          {isBooked && room.bookedPet?.petImage && (
+                            <img
+                              src={`${IMAGE_URL}/${room.bookedPet.petImage}`}
+                              alt={room.bookedPet.petName}
+                              className="w-8 h-8 rounded-full object-cover border-2 border-white shadow-sm"
+                            />
+                          )}
+
+                          {isSelected && !isBooked && (
+                            <CheckCircle size={16} className="text-white" />
+                          )}
+
+                          <span
+                            className={`text-[10px] font-bold uppercase tracking-wider ${
+                              isBooked
+                                ? "text-orange-600"
+                                : isSelected
+                                ? "text-blue-100"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {isBooked
+                              ? "Booked"
+                              : isSelected
+                              ? "Selected"
+                              : "Available"}
+                          </span>
+
+                          {isBooked && room.bookedPet?.petName && (
+                            <span className="text-[9px] text-orange-500 truncate w-full text-center">
+                              {room.bookedPet.petName}
+                            </span>
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {selectedRooms.length > 0 && (
+                  <div className="mt-4 p-3 bg-blue-50 rounded-xl border border-blue-100">
+                    <p className="text-sm font-bold text-blue-900">
+                      Selected Rooms:{" "}
+                      {selectedRooms.sort((a, b) => a - b).join(", ")}
+                    </p>
+                  </div>
+                )}
               </div>
             )}
           </div>
 
-          {/* Right Side: About & Ratings - FIXED LAYOUT */}
           <div className="flex flex-col gap-8 mt-0 md:mt-[-8px]">
-            {/* About Us - Extended Height to Match Images */}
             <div className="bg-white p-6 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.09)] border border-gray-100 h-[585px] flex flex-col">
               <div className="flex items-center gap-3 mb-4">
                 <Info size={28} className="text-[#183D8B]" />
@@ -499,7 +621,6 @@ export default function ShelterDetails() {
               </div>
             </div>
 
-            {/* Ratings & Reviews - Starts After About Us */}
             <div className="flex-1">
               <h2 className="text-2xl font-bold text-[#183D8B] mb-4 uppercase tracking-tight">
                 Ratings & Reviews
@@ -510,18 +631,22 @@ export default function ShelterDetails() {
         </div>
 
         <div className="fixed bottom-8 left-0 right-0 z-50 px-4 pointer-events-none flex justify-center">
-          <button 
+          <button
             disabled={shelter.status?.toUpperCase() === "UNAVAILABLE"}
-            onClick={() => navigate(`/booking/${shelter._id}`, { state: { shelter } })}
-            className={`pointer-events-auto text-lg font-bold px-12 py-3 
-              rounded-lg 
-              shadow-lg transition-all transform flex items-center justify-center gap-3 uppercase tracking-wider
-              ${shelter.status?.toUpperCase() === "UNAVAILABLE" 
-                ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none border border-gray-400" 
+            onClick={handleBookNow}
+            className={`pointer-events-auto text-lg font-bold px-12 py-3 rounded-lg shadow-lg transition-all transform flex items-center justify-center gap-3 uppercase tracking-wider ${
+              shelter.status?.toUpperCase() === "UNAVAILABLE"
+                ? "bg-gray-300 text-gray-500 cursor-not-allowed shadow-none border border-gray-400"
                 : "bg-[#183D8B] hover:bg-[#122e6b] text-white hover:-translate-y-1 active:scale-95 shadow-[0_10px_25px_rgba(24,61,139,0.3)]"
-              }`}
+            }`}
           >
-            {shelter.status?.toUpperCase() === "UNAVAILABLE" ? "NOT BOOKABLE" : "BOOK NOW"}
+            {shelter.status?.toUpperCase() === "UNAVAILABLE"
+              ? "NOT BOOKABLE"
+              : selectedRooms.length > 0
+              ? `BOOK ${selectedRooms.length} ROOM${
+                  selectedRooms.length > 1 ? "S" : ""
+                }`
+              : "SELECT ROOMS TO BOOK"}
           </button>
         </div>
       </div>

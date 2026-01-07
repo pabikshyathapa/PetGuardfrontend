@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react"; 
 import Header from "../../layouts/Header";
+import Footer from "../../layouts/Footer";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper";
 import { FaEdit, FaPlus, FaMapMarkerAlt, FaUserEdit, FaSave, FaTimes } from "react-icons/fa";
 import { usePets } from "../../hooks/petowner/usePetprofile";
 import { updateUser } from "../../services/authService";
 import { toast } from "react-toastify";
+
 
 const InfoBox = ({ label, value, editMode, onChange, suffix = "" }) => (
   <div style={styles.infoBox}>
@@ -209,10 +211,10 @@ export default function PetProfilePage() {
 };
   if (loading) return <div style={{ padding: "100px", textAlign: "center" }}>Loading Profile...</div>;
   return (
-    <div style={{ backgroundColor: "#F3F1EE", minHeight: "100vh", paddingBottom: "40px" }}>
+  <div style={styles.pageWrapper}>
       <Header />
       {/* FIXED: Reduced top padding from 120px to 80px */}
-      <main style={{ maxWidth: "1150px", margin: "0 auto", padding: "80px 20px 20px" }}>
+    <main style={styles.mainContent}>
         
         {/* FIXED: Reduced marginBottom from 30px to 15px */}
         <div style={styles.actionBar}>
@@ -368,6 +370,8 @@ export default function PetProfilePage() {
           ))}
         </Swiper>
       </main>
+      {/* FOOTER */}
+      <Footer />
       {/* ADD THIS HERE: */}
       <DeleteModal 
         isOpen={isDeleteModalOpen} 
@@ -375,12 +379,12 @@ export default function PetProfilePage() {
         onConfirm={handleRemovePet} 
         petName={selectedPet?.petName} 
       />
+      
     </div> 
+    
   );
   
 }
-
-
 const styles = {
   actionBar: { display: "flex", justifyContent: "flex-end", gap: "15px", marginBottom: "15px" },
   card: { background: "#fff", borderRadius: "20px", padding: "30px 50px", boxShadow: "0 12px 40px rgba(0,0,0,0.06)", border: "1px solid #CBD5E0" },
@@ -419,5 +423,19 @@ const styles = {
   modalContent: {background: "#fff",padding: "30px",borderRadius: "15px",width: "380px",textAlign: "center",boxShadow: "0 10px 25px rgba(0,0,0,0.1)",},
   modalCancelBtn: { background: "#E2E8F0",color: "#4A5568",border: "none",padding: "10px 20px",borderRadius: "8px",marginRight: "10px",cursor: "pointer",fontWeight: "600",},
   modalConfirmBtn: {background: "#E53E3E",color: "#fff",border: "none",padding: "10px 20px",borderRadius: "8px",cursor: "pointer",fontWeight: "600",},
+  pageWrapper: {
+    minHeight: "100vh",
+    display: "flex",
+    flexDirection: "column",
+    backgroundColor: "#F3F1EE",
+  },
+
+  mainContent: {
+    flex: 1, // 👈 pushes footer to bottom
+    maxWidth: "1150px",
+    margin: "0 auto",
+    padding: "80px 20px 20px",
+    width: "100%",
+  },
 };
 
