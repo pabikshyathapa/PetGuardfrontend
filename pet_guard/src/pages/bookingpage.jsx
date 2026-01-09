@@ -1234,7 +1234,7 @@ export default function BookingPage() {
       } else {
         // Check if we have enough rooms
         if (prev.length >= preSelectedRooms.length) {
-          alert(`You can only select ${preSelectedRooms.length} pet(s) for the ${preSelectedRooms.length} room(s) you chose`);
+          alert(`You can only select ${preSelectedRooms.length} pet for the ${preSelectedRooms.length} room you chose`);
           return prev;
         }
         return [...prev, petId];
@@ -1294,7 +1294,7 @@ export default function BookingPage() {
   const handleBooking = async () => {
     if (!selectedPets.length) return alert("Please select at least one pet");
     if (selectedPets.length !== preSelectedRooms.length) {
-      return alert(`Please select exactly ${preSelectedRooms.length} pet(s) for your ${preSelectedRooms.length} room(s)`);
+      return alert(`Please select exactly ${preSelectedRooms.length} pet for your ${preSelectedRooms.length} room`);
     }
     
     // Check if all pets have room assignments
@@ -1398,7 +1398,7 @@ export default function BookingPage() {
                   <Banknote size={16} className="text-blue-300" /> Rs {shelter.pricePerDay} / day
                 </span>
                 <span className="flex items-center gap-2 bg-white/10 px-4 py-2 rounded-xl text-sm backdrop-blur-md">
-                  <DoorOpen size={16} className="text-blue-300" /> {preSelectedRooms.length} Room(s) Selected
+                  <DoorOpen size={16} className="text-blue-300" /> {preSelectedRooms.length} Room Selected
                 </span>
               </div>
             </div>

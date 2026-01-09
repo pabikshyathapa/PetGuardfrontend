@@ -96,9 +96,9 @@
 
 //       <div className="py-20 px-4 sm:px-6">
 //         <div className="max-w-5xl mx-auto">
-          
-//           <button 
-//             onClick={() => navigate(-1)} 
+
+//           <button
+//             onClick={() => navigate(-1)}
 //             className="flex items-center gap-2 text-slate-500 hover:text-[#183D8B] font-bold mb-8 transition-colors group"
 //           >
 //             <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
@@ -177,7 +177,7 @@
 //                        Transaction Ref: {b.payment?.transactionId || "N/A"}
 //                      </span>
 //                   </div>
-                  
+
 //                   <div className="p-8">
 //                     <div className="flex flex-col lg:flex-row justify-between gap-10">
 //                       <div className="flex-1">
@@ -578,6 +578,7 @@ import {
   getBookingHistory,
   cancelBooking,
 } from "../../services/Shelter/shelterbooking";
+import Footer from "../../layouts/Footer";
 
 export default function BookingHistory() {
   const navigate = useNavigate();
@@ -604,7 +605,8 @@ export default function BookingHistory() {
   }, []);
 
   const handleCancel = async (id) => {
-    if (!window.confirm("Are you sure you want to cancel this booking?")) return;
+    if (!window.confirm("Are you sure you want to cancel this booking?"))
+      return;
     try {
       await cancelBooking(id);
       fetchBookings();
@@ -686,9 +688,7 @@ export default function BookingHistory() {
                   key={f}
                   onClick={() => setFilter(f)}
                   className={`px-5 py-2 rounded-xl text-sm font-bold ${
-                    filter === f
-                      ? "bg-[#183D8B] text-white"
-                      : "text-slate-600"
+                    filter === f ? "bg-[#183D8B] text-white" : "text-slate-600"
                   }`}
                 >
                   {f === "all"
@@ -720,7 +720,9 @@ export default function BookingHistory() {
           )}
 
           {filteredBookings.length ? (
-            <div className="space-y-4"> {/* Reduced space between cards */}
+            <div className="space-y-4">
+              {" "}
+              {/* Reduced space between cards */}
               {filteredBookings.map((b) => {
                 const rooms =
                   b.roomAssignments?.map((r) => r.roomNumber) ||
@@ -741,9 +743,7 @@ export default function BookingHistory() {
                             onClick={() =>
                               navigate(
                                 `/shelters/${b.shelter?._id}${
-                                  rooms.length
-                                    ? `?room=${rooms[0]}`
-                                    : ""
+                                  rooms.length ? `?room=${rooms[0]}` : ""
                                 }`
                               )
                             }
@@ -782,7 +782,8 @@ export default function BookingHistory() {
                         {/* Grid layout for info items to save vertical space */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2">
                           <Info icon={<Calendar size={16} />} label="Stay">
-                            {new Date(b.startDate).toLocaleDateString()} — {new Date(b.endDate).toLocaleDateString()}
+                            {new Date(b.startDate).toLocaleDateString()} —{" "}
+                            {new Date(b.endDate).toLocaleDateString()}
                           </Info>
 
                           <Info icon={<Wallet size={16} />} label="Payment">
@@ -841,13 +842,16 @@ export default function BookingHistory() {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
 
 function Info({ label, children, icon }) {
   return (
-    <div className="mt-1"> {/* Reduced top margin */}
+    <div className="mt-1">
+      {" "}
+      {/* Reduced top margin */}
       <div className="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase">
         {icon} {label}
       </div>

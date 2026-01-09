@@ -21,7 +21,7 @@ export default function ShelterCard({ shelter }) {
   // Open booking page when Book Now is clicked
   const openBooking = (e) => {
     e.stopPropagation(); // prevent card click
-    navigate(`/booking/${shelter._id}`);
+    navigate(`/shelters/${shelter._id}`);
   };
 
   // Handle favorite toggle

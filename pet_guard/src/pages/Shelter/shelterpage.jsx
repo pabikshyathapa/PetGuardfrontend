@@ -947,10 +947,10 @@ useEffect(() => {
       return false;
     }
 
-    if (!totalRooms || totalRooms <= 0) {
-      toast.error("Please enter at least 1 room", toastConfig);
-      return false;
-    }
+    // if (!totalRooms || totalRooms <= 0) {
+    //   toast.error("Please enter at least 1 room", toastConfig);
+    //   return false;
+    // }
 
     return true;
   };
