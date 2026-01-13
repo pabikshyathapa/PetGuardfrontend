@@ -86,7 +86,7 @@ export default function FavoritesPage() {
                 your favorites here
               </p>
               <button
-                onClick={() => navigate("/browse-shelters")}
+                onClick={() => navigate("/browseshelter")}
                 className="px-8 py-4 bg-[#183D8B] text-white rounded-xl font-semibold text-lg hover:bg-[#122e6b] transition-all hover:shadow-xl transform hover:scale-105"
               >
                 Browse Shelters

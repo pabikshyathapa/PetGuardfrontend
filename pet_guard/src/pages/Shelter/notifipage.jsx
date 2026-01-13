@@ -238,7 +238,8 @@ export default function ShelterNotifications() {
         {/* Header Section */}
         <div className="flex items-center justify-between mb-10">
           <div>
-            <h1 className="text-4xl font-extrabold text-blue-950 tracking-tight">
+            <h1 className="text-4xl font-extrabold tracking-tight"
+             style={{ color: "#183D8B" }}>
               Notifications
             </h1>
             <p className="text-gray-500 mt-1">

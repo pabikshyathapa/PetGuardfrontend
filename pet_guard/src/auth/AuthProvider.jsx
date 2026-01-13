@@ -13,7 +13,7 @@ const AuthContextProvider = ({ children }) => {
     localStorage.setItem("token", token);
     localStorage.setItem("user", JSON.stringify(userData));
     setUser(userData);
-     toast.success("Login successful!"); 
+    //  toast.success("Login successful!"); 
     } catch (error) {
       toast.error("Login failed "); 
       console.error(error);
