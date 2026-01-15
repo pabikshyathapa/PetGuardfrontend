@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaTimes, FaSearch, FaMapMarkerAlt, FaTag, FaConciergeBell } from "react-icons/fa";
+import { FaTimes, FaSearch, FaMapMarkerAlt, FaTag, FaListUl } from "react-icons/fa";
 
 export default function ShelterSearchModal({ isOpen, onClose }) {
   const navigate = useNavigate();
@@ -70,7 +70,7 @@ export default function ShelterSearchModal({ isOpen, onClose }) {
 
           {/* Location */}
           <div className="space-y-1">
-            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider ml-1">Preffered Location</label>
+            <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider ml-1">Preferred Location</label>
             <div className="relative">
               <FaMapMarkerAlt className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
@@ -110,7 +110,7 @@ export default function ShelterSearchModal({ isOpen, onClose }) {
           <div className="space-y-1">
             <label className="text-xs font-semibold text-gray-500 uppercase tracking-wider ml-1">Required Service</label>
             <div className="relative">
-              <FaConciergeBell className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+              <FaListUl className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
               <select
                 name="service"
                 onChange={handleChange}
