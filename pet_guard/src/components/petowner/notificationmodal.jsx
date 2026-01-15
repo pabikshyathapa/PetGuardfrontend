@@ -66,7 +66,8 @@ export default function PetOwnerNotificationModal({ isOpen, onClose }) {
           {/* Header */}
           <div className="sticky top-0 bg-white border-b border-gray-200 px-8 py-6 flex items-center justify-between">
             <div>
-              <h2 className="text-3xl font-extrabold text-blue-950 tracking-tight">
+              <h2 className="text-3xl font-extrabold text-blue-950 tracking-tight"
+               style={{ color: "#183D8B" }}>
                 Notifications
               </h2>
               <p className="text-gray-500 mt-1">

@@ -200,6 +200,7 @@ export default function ShelterBookings() {
                 <option value="all">Any Status</option>
                 <option value="confirmed">Confirmed</option>
                 <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
               </select>
             </div>
             <div>

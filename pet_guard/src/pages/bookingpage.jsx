@@ -458,7 +458,7 @@ export default function BookingPage() {
                 <button
                   onClick={handleBooking}
                   disabled={selectedPets.length !== preSelectedRooms.length || Object.keys(petRoomAssignments).length !== selectedPets.length || isSubmitting}
-                  className="group relative flex-1 lg:flex-none bg-[#183D8B] text-white px-12 py-5 rounded-[1.5rem] font-bold shadow-2xl shadow-blue-900/30 hover:bg-blue-800 active:scale-95 disabled:bg-gray-300 disabled:shadow-none transition-all flex items-center justify-center gap-3"
+                  className="group relative flex-1 lg:flex-none bg-[#183D8B] text-white px-12 py-5 rounded-[1.5rem] font-bold shadow-2xl shadow-blue-900/30 hover:bg-[#122e6b] active:scale-95 disabled:bg-gray-300 disabled:shadow-none transition-all flex items-center justify-center gap-3"
                 >
                   {isSubmitting ? (
                     <>

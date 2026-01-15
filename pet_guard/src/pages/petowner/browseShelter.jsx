@@ -11,7 +11,13 @@ export default function BrowseShelters() {
   const sheltersPerPage = 12; // 3 rows x 4 columns
 
   useEffect(() => {
-    getAllShelters().then(setShelters);
+    getAllShelters().then((data) => {
+      // Filter to show only available shelters
+      const availableShelters = data.filter(
+        (shelter) => shelter.status === "available" || shelter.isAvailable === true
+      );
+      setShelters(availableShelters);
+    });
   }, []);
 
   // Pagination calculations
@@ -92,3 +98,4 @@ export default function BrowseShelters() {
     </div>
   );
 }
+
