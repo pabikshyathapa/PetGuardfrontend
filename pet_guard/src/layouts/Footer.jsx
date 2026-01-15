@@ -60,7 +60,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 className="block w-full text-blue-100 hover:text-white"
               >
-                Help Center
+                How PetGuard Works
               </a>
             </li>
           </ul>
